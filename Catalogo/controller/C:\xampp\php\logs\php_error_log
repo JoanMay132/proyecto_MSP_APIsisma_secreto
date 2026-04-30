@@ -1,0 +1,25 @@
+[25-Mar-2025 09:38:43 America/Mexico_City] PHP Warning:  Undefined array key "tituloReg" in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[25-Mar-2025 09:38:43 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php:31
+Stack trace:
+#0 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[25-Mar-2025 09:38:51 America/Mexico_City] PHP Warning:  Undefined array key "tituloReg" in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[25-Mar-2025 09:38:51 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php:31
+Stack trace:
+#0 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[12-May-2025 13:48:02 America/Mexico_City] PHP Warning:  Undefined array key "tituloReg" in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[12-May-2025 13:48:02 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php:31
+Stack trace:
+#0 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[12-May-2025 13:48:12 America/Mexico_City] PHP Warning:  Undefined array key "tituloReg" in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[12-May-2025 13:48:12 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php:31
+Stack trace:
+#0 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[27-Aug-2025 18:40:02 America/Mexico_City] PHP Warning:  Undefined array key "tituloReg" in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31
+[27-Aug-2025 18:40:02 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php:31
+Stack trace:
+#0 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/Catalogo/controller/addUserCustom.php on line 31

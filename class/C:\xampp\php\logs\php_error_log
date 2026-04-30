@@ -1,0 +1,53 @@
+[13-Feb-2025 23:49:54 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:23
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(25): Sesion->Login('freddy', 'Mspfreddy')
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 23
+[13-Feb-2025 16:55:39 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mspetrol_msp_api.usuario' doesn't exist in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:25
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php(25): PDOStatement->execute()
+#1 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(25): Sesion->Login('freddy', 'Mspfreddy')
+#2 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 25
+[13-Feb-2025 16:55:53 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mspetrol_msp_api.usuario' doesn't exist in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:25
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php(25): PDOStatement->execute()
+#1 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(25): Sesion->Login('freddy', 'Mspfreddy')
+#2 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 25
+[13-Feb-2025 16:56:03 America/Mexico_City] PHP Warning:  Undefined array key "username" in /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php on line 17
+[13-Feb-2025 16:56:03 America/Mexico_City] PHP Warning:  Undefined array key "password" in /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php on line 18
+[13-Feb-2025 16:57:51 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mspetrol_msp_api.usuario' doesn't exist in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:25
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php(25): PDOStatement->execute()
+#1 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(25): Sesion->Login('root', 'MSPprincipal')
+#2 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 25
+[13-Feb-2025 16:57:54 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mspetrol_msp_api.usuario' doesn't exist in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:25
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php(25): PDOStatement->execute()
+#1 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(25): Sesion->Login('root', 'MSPprincipal')
+#2 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 25
+[13-Feb-2025 16:58:01 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mspetrol_msp_api.usuario' doesn't exist in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:25
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php(25): PDOStatement->execute()
+#1 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(25): Sesion->Login('root', 'MSPprincipal')
+#2 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 25
+[13-Feb-2025 16:59:23 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mspetrol_msp_api.usuario' doesn't exist in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:25
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php(25): PDOStatement->execute()
+#1 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(25): Sesion->Login('freddy', 'Mspfreddy')
+#2 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 25
+[04-Oct-2025 22:02:32 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:23
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(24): Sesion->Login('manuel', 'Mspmanuel')
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 23
+[04-Oct-2025 22:02:39 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php:23
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspapisisma/class/Login.php(24): Sesion->Login('manuel', 'Mspmanuel')
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspapisisma/class/sesion.php on line 23

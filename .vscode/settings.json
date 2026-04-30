@@ -1,0 +1,7 @@
+{
+    "editor.cursorStyle": "line",
+    "workbench.editor.enablePreview": true,
+    "breadcrumbs.showFiles": true,
+    "breadcrumbs.filePath": "on",
+    "explorer.autoReveal": false
+}
