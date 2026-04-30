@@ -1,0 +1,174 @@
+[22-Apr-2025 12:31:37 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[22-Apr-2025 12:31:37 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[22-Apr-2025 12:31:57 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[22-Apr-2025 12:31:57 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[22-Apr-2025 12:34:28 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[22-Apr-2025 12:34:28 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[22-Apr-2025 12:57:28 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[22-Apr-2025 12:57:28 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[22-Apr-2025 12:57:30 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[22-Apr-2025 12:57:30 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[22-Apr-2025 12:59:02 America/Mexico_City] PHP Warning:  Undefined array key "sucursal" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 14
+[22-Apr-2025 12:59:02 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21
+[22-Apr-2025 12:59:02 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::listBranchInPermission(): Argument #1 ($result) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:59
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php(21): Permisos->listBranchInPermission(NULL, 1, 13)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 59
+[08-May-2025 23:05:36 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php:17
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(14): Unidad->GetDataAll()
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php on line 17
+[08-May-2025 23:05:42 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php:17
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(14): Unidad->GetDataAll()
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php on line 17
+[26-May-2025 18:55:33 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[26-May-2025 18:55:33 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[27-May-2025 18:34:00 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php on line 32
+[27-May-2025 18:34:00 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php on line 32 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php(32): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[21-Jul-2025 15:54:14 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php on line 32
+[21-Jul-2025 15:54:14 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php on line 32 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php(32): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[22-Aug-2025 16:09:31 America/Mexico_City] PHP Warning:  Undefined array key "sucursal" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 14
+[22-Aug-2025 16:09:31 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21
+[22-Aug-2025 16:09:31 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::listBranchInPermission(): Argument #1 ($result) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:59
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php(21): Permisos->listBranchInPermission(NULL, 1, 13)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 59
+[23-Aug-2025 12:30:20 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[23-Aug-2025 12:30:20 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 1)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[23-Aug-2025 12:30:24 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18
+[23-Aug-2025 12:30:24 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/materiales.php(18): Permisos->getPermissionControl(NULL, 9, 1)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[05-Oct-2025 15:35:14 America/Mexico_City] PHP Warning:  Undefined array key "sucursal" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 14
+[05-Oct-2025 15:35:14 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21
+[05-Oct-2025 15:35:14 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::listBranchInPermission(): Argument #1 ($result) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:59
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php(21): Permisos->listBranchInPermission(NULL, 1, 13)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 59
+[05-Oct-2025 15:35:21 America/Mexico_City] PHP Warning:  Undefined array key "sucursal" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 14
+[05-Oct-2025 15:35:21 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21
+[05-Oct-2025 15:35:21 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::listBranchInPermission(): Argument #1 ($result) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php on line 21 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:59
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/presupuesto.php(21): Permisos->listBranchInPermission(NULL, 1, 13)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 59
+[29-Oct-2025 15:09:06 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php on line 32
+[29-Oct-2025 15:09:06 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php on line 32 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php(32): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[29-Oct-2025 15:09:06 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php on line 32
+[29-Oct-2025 15:09:06 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php on line 32 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php(32): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[29-Oct-2025 15:41:36 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php on line 32
+[29-Oct-2025 15:41:36 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php on line 32 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuestoind.php(32): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[15-Jan-2026 10:55:49 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php on line 32
+[15-Jan-2026 10:55:49 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php on line 32 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/epresupuesto.php(32): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[21-Feb-2026 16:28:01 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php:17
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php(14): Unidad->GetDataAll()
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php on line 17
+[21-Feb-2026 16:28:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php:17
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php(14): Unidad->GetDataAll()
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Unidad.php on line 17
+[09-Mar-2026 16:16:22 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18
+[09-Mar-2026 16:16:22 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php(18): Permisos->getPermissionControl(NULL, 10, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[09-Mar-2026 16:16:33 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18
+[09-Mar-2026 16:16:33 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php(18): Permisos->getPermissionControl(NULL, 10, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[09-Mar-2026 16:16:35 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18
+[09-Mar-2026 16:16:35 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php(18): Permisos->getPermissionControl(NULL, 10, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[09-Mar-2026 16:16:42 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18
+[09-Mar-2026 16:16:42 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php on line 18 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/mobra.php(18): Permisos->getPermissionControl(NULL, 10, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[27-Mar-2026 14:55:14 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuesto.php on line 15
+[27-Mar-2026 14:55:14 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuesto.php on line 15 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuesto.php(15): Permisos->getPermissionControl(NULL, 13, '2')
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[27-Mar-2026 14:55:30 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuesto.php on line 15
+[27-Mar-2026 14:55:30 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuesto.php on line 15 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuesto.php(15): Permisos->getPermissionControl(NULL, 13, '2')
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[27-Mar-2026 14:55:32 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuestoind.php on line 15
+[27-Mar-2026 14:55:32 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuestoind.php on line 15 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/listpresupuestoind.php(15): Permisos->getPermissionControl(NULL, 13, '2')
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41

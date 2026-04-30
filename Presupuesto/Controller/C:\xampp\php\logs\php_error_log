@@ -1,0 +1,137 @@
+[25-Mar-2025 07:39:05 America/Mexico_City] PHP Warning:  Undefined array key 199 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 39
+[25-Mar-2025 07:39:10 America/Mexico_City] PHP Warning:  Undefined array key 199 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 39
+[22-Apr-2025 12:58:48 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48
+[22-Apr-2025 12:58:48 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(48): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[08-May-2025 23:05:18 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:16
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(95): Presupuesto->Add(Array)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 16
+[08-May-2025 23:06:55 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[08-May-2025 23:06:58 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[08-May-2025 23:06:59 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[08-May-2025 23:07:00 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[08-May-2025 23:07:01 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[08-May-2025 23:07:04 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[08-May-2025 23:07:06 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[08-May-2025 23:07:27 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(196, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[27-May-2025 18:32:52 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48
+[27-May-2025 18:32:52 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(48): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[21-Jul-2025 15:26:47 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48
+[21-Jul-2025 15:26:47 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(48): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 539 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 539 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 539 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 539 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 540 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 540 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 540 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 540 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Oct-2025 14:02:49 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 541 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 542 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 543 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 543 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 543 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 543 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 544 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 544 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 544 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[10-Nov-2025 14:40:26 America/Mexico_City] PHP Warning:  Undefined array key 544 in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Materiales.php on line 34
+[27-Nov-2025 16:44:34 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48
+[27-Nov-2025 16:44:34 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(48): Permisos->getPermissionControl(NULL, 13, 1)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[06-Dec-2025 14:16:34 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48
+[06-Dec-2025 14:16:34 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(48): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[19-Feb-2026 11:37:10 America/Mexico_City] PHP Warning:  Undefined array key "sucursal" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 40
+[21-Feb-2026 16:28:05 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:77
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(101): Presupuesto->UpdateData(Array)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 77
+[21-Feb-2026 16:28:13 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(1505, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[21-Feb-2026 16:28:13 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(1505, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[21-Feb-2026 16:28:14 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php:136
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(32): Presupuesto->findServcot(1505, 0)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/controlador/Presupuesto.php on line 136
+[09-Mar-2026 16:16:50 America/Mexico_City] PHP Warning:  Undefined array key "controles" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48
+[09-Mar-2026 16:16:50 America/Mexico_City] PHP Fatal error:  Uncaught TypeError: Permisos::getPermissionControl(): Argument #1 ($resul) must be of type array, null given, called in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php on line 48 and defined in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php:41
+Stack trace:
+#0 /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuesto.php(48): Permisos->getPermissionControl(NULL, 13, 2)
+#1 {main}
+  thrown in /home2/mspetrol/systemsisma.org/mspsisma/class/Permisos.php on line 41
+[10-Mar-2026 16:15:05 America/Mexico_City] PHP Warning:  Undefined array key "sucursal" in /home2/mspetrol/systemsisma.org/mspsisma/Presupuesto/Controller/Presupuestoind.php on line 40
