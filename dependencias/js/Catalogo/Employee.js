@@ -101,3 +101,60 @@ function selecciona(){
     let arriba = Math.round((ventanaAlto - 550) / 2);
     window["PERMISOS"] ? window["PERMISOS"].focus() : window.open(URL, "PERMISOS", "width=500,height=550,scrollbars=yes,left=" + izquierda + ",top=" + arriba + ",addressbar=0,menubar=0,toolbar=0");
   }
+
+function updateEmployeeStatus(select, empleado, sucursal) {
+  const estado = select.value;
+  const previous = select.getAttribute("data-prev") ?? estado;
+  select.disabled = true;
+
+  $.ajax({
+    type: "POST",
+    url: "controller/updateEmployeeStatus.php",
+    dataType: "json",
+    data: {
+      empleado: empleado,
+      sucursal: sucursal,
+      estado: estado
+    },
+    success: async function (respuesta) {
+      if (respuesta.error) {
+        select.value = previous;
+        paintStatus(select, previous);
+        await Swal.fire({
+          position: "center",
+          icon: "error",
+          text: respuesta.error,
+          showConfirmButton: true
+        });
+        select.disabled = false;
+        return false;
+      }
+
+      const estadoFinal = String(respuesta.estado ?? estado);
+      select.value = estadoFinal;
+      select.setAttribute("data-prev", estadoFinal);
+      paintStatus(select, estadoFinal);
+      select.disabled = false;
+      return true;
+    },
+    error: async function () {
+      select.value = previous;
+      paintStatus(select, previous);
+      await Swal.fire({
+        position: "center",
+        icon: "error",
+        text: "Error al actualizar estado",
+        showConfirmButton: true
+      });
+      select.disabled = false;
+    }
+  });
+
+  return false;
+}
+
+function paintStatus(select, estado) {
+  const estadoTxt = String(estado);
+  select.classList.remove("status-active", "status-inactive");
+  select.classList.add(estadoTxt === "1" ? "status-active" : "status-inactive");
+}

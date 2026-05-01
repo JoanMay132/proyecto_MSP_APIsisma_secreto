@@ -99,7 +99,7 @@ async function Sucursal(valor){
     //Se actuliza la lista de empleado por sucursal
     await $.ajax({
         type: "POST",
-        data: {"sucursal": valor},
+        data: { "sucursal": valor, "soloActivos": "1" },
         url: "../Trazabilidad/Cargas/loadEmpleados.php",
         dataType: "json",
         success:function(respuesta){
@@ -261,10 +261,11 @@ function setFolio() {
     
     //folioOt = "";
     let sucursal = document.getElementById('sucursal').value;
-    let fecha = document.getElementById('fechaorden').value;
+    let fechaorden = document.getElementById('fechaorden').value;
+    let fechaentrega = document.getElementById('fechaentrega').value;
     $.ajax({
         type: "POST",
-        data: { "setFolio": "true", "sucursal": sucursal,"fecha":fecha },
+        data: { "setFolio": "true", "sucursal": sucursal, "fechaorden": fechaorden, "fechaentrega": fechaentrega },
         url: "Controller/Ocompra.php",
         dataType: "json",
         success: function (respuesta) {

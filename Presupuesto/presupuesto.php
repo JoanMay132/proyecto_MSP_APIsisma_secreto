@@ -107,14 +107,14 @@ $rol->listBranchInPermission($_SESSION['controles'],Operacion::modifica->value,C
                                     
                                     <td class="text-right" colspan="2" ><strong>CANT. HORA</strong></td>
                                     <td>
-                                        <input type="number" readonly class="form-control form-control-sm no-bg text-center border-dark input-form" id="canthora"  min="0" value="0.0" step="0.1" style="height: 20px;">
+                                        <input type="number" readonly class="form-control form-control-sm no-bg text-center border-dark input-form" id="canthora"  min="0" value="0.00" step="0.01" style="height: 20px;">
                                     </td>
                                     <td colspan="2" class="text-right"><strong>SUMA:</strong></td>
                                     <td class="text-center"><p id="sumaTotal" class="no-bg text-center border-dark input-form">0.00</p></td>
                                 </tr>
                                 <tr class="text-right">
                                     <td colspan="2"><strong>TIEMPO EXTRAORDINARIO</strong></td>
-                                    <td><input type="number" class="form-control form-control-sm no-bg text-center border-dark input-form" id="tExtra" min="0" value="0.0" step="0.1" style="height: 20px;"  onchange="tiempoExtra(); ImporteHtaEq();" name="textra"></td>
+                                    <td><input type="number" class="form-control form-control-sm no-bg text-center border-dark input-form" id="tExtra" min="0" value="0.00" step="0.01" style="height: 20px;"  onchange="tiempoExtra(); ImporteHtaEq();" name="textra"></td>
                                     <td>
                                         <select class="form-control form-control-sm no-bg text-center border-dark input-form" name="utiempo" style="height:20px;padding:0px">
                                             <option value="HORA">HORA</option>
@@ -393,7 +393,7 @@ $rol->listBranchInPermission($_SESSION['controles'],Operacion::modifica->value,C
 <?php
   include_once '../dependencias/php/footer.php';
 ?>
-<script type="text/javascript" src="../dependencias/js/Presupuesto/Analisis.js"></script>
+<script type="text/javascript" src="../dependencias/js/Presupuesto/Analisis.js?v=1.0.9"></script>
 
 <script>
   $( function() {
@@ -424,3 +424,17 @@ $rol->listBranchInPermission($_SESSION['controles'],Operacion::modifica->value,C
        </script>
 <?php }
    ?>
+
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
+
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>

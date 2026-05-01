@@ -112,7 +112,7 @@ $rol->listBranchInPermission($_SESSION['controles'],Operacion::modifica->value,C
                                 </tr>
                                 <tr class="text-right">
                                     <td colspan="2"><strong>TIEMPO EXTRAORDINARIO</strong></td>
-                                    <td><input type="number" class="form-control form-control-sm no-bg text-center border-dark input-form" id="tExtra" min="0.00" value="0.00" step="0.01" style="height: 20px;"  onchange="tiempoExtra(); ImporteHtaEq();" name="textra"></td>
+                                    <td><input type="number" class="form-control form-control-sm no-bg text-center border-dark input-form" id="tExtra" min="0" value="0.0" step="0.1" style="height: 20px;"  onchange="tiempoExtra(); ImporteHtaEq();" name="textra"></td>
                                     <td>
                                         <select class="form-control form-control-sm no-bg text-center border-dark input-form" name="utiempo" style="height:20px;padding:0px">
                                             <option value="HORA">HORA</option>
@@ -424,4 +424,18 @@ $rol->listBranchInPermission($_SESSION['controles'],Operacion::modifica->value,C
                 <?php echo 'Sucursal("'.$_GET['suc'].'");'; ?>
        </script>
 <?php }
-   ?>
+  ?>
+
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
+
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>

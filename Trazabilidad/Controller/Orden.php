@@ -54,6 +54,10 @@ if (isset($_POST["setFolio"]) && @$_POST["setFolio"] == "true") {
 
             return true;
         }
+
+        $resp["error"] = 'No se pudo asignar folio';
+        echo json_encode($resp);
+        return false;
     } else {
         $resp["error"] = 'No se ha seleccionado sucursal';
         echo json_encode($resp);

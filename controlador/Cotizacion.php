@@ -11,6 +11,93 @@
            
 		}
 
+        public function AddFolio($folio,$sucursal,$fecha,$iva): bool{
+            $query = self::$conexion->prepare('INSERT INTO cotizacion (
+                folio,
+                fecha,
+                fkcliente,
+                fkusercli,
+                fkattnusercli,
+                titulo,
+                lab,
+                garantia,
+                cargo,
+                fkecotizo,
+                fkeresponsable,
+                vigencia,
+                ocompra,
+                dnormativos,
+                efabricacion,
+                formpago,
+                dcredito,
+                tiempoent,
+                dattecnicos,
+                doclegal,
+                costo,
+                fkdeptocli,
+                factura,
+                estado,
+                factura2,
+                fechafactura,
+                observacion,
+                contenido,
+                moneda,
+                tipocambio,
+                descto,
+                iva,
+                subtotal1,
+                subtotal2,
+                total,
+                fkrevpreeliminar,
+                fksucursal
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
+
+            if($query->execute(array(
+                $folio,
+                $fecha,
+                0,
+                0,
+                0,
+                '',
+                '',
+                '',
+                '',
+                0,
+                0,
+                '',
+                '',
+                '',
+                '',
+                'CONTADO',
+                '0',
+                '',
+                '',
+                '',
+                0,
+                0,
+                '',
+                'AUTORIZACION PENDIENTE',
+                '',
+                $fecha,
+                '',
+                0,
+                'NACIONAL',
+                0,
+                0,
+                $iva,
+                0,
+                0,
+                0,
+                0,
+                $sucursal
+            )) > 0){
+                $this->pkcotizacion = self::$conexion->lastInsertId();
+               return true;
+            }
+
+            return false;
+        }
+
         public function Add(array $data): bool{
             $query = self::$conexion->prepare('INSERT INTO cotizacion (
                 folio,
@@ -120,7 +207,7 @@
         public function Update(array $data) : bool{
            
             $query = self::$conexion->prepare('UPDATE cotizacion SET 
-                folio = ?,
+                -- folio = ?,
                 fecha = ?,
                 fkcliente = ?,
                 fkusercli = ?,
@@ -157,7 +244,7 @@
                 fkrevpreeliminar = ?
             WHERE pkcotizacion = ? ');
             if($query->execute(array(
-                $data["folio"],
+                // $data["folio"],
                 $data["fecha"],
                 $data["fkcliente"],
                 $data["fkusercli"],
@@ -230,7 +317,7 @@
                 empleado.apellidos FROM cotizacion
             LEFT JOIN cliente ON cotizacion.fkcliente = cliente.pkcliente
             LEFT JOIN deptocli ON cotizacion.fkdeptocli = deptocli.pkdeptocli 
-            LEFT JOIN empleado ON cotizacion.fkecotizo = empleado.pkempleado WHERE cotizacion.fksucursal = ? AND YEAR(cotizacion.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(folio, "/", 1), "A", -1) AS UNSIGNED) DESC,folio DESC');
+            LEFT JOIN empleado ON cotizacion.fkecotizo = empleado.pkempleado WHERE cotizacion.fksucursal = ? AND YEAR(cotizacion.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(folio, "/", 1), "C", -1) AS UNSIGNED) DESC,folio DESC');
             $query->execute(array($data,$anio));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
@@ -285,17 +372,6 @@
             $query = self::$conexion->prepare('DELETE FROM servcotizacion WHERE pkservcot = ?');
 
            if( $query->execute(array($servicio)) > 0 ){
-                return true;
-           }
-           return false;
-
-        }
-
-        public function DelServAll($data,$array) : bool{
-            $placeholder = rtrim(str_repeat('?,',count($data)),',');
-            $query = self::$conexion->prepare('DELETE FROM servcotizacion WHERE fkcotizacion = ? AND pkservcot NOT IN ('.$placeholder.') ');
-            
-           if( $query->execute($array) > 0 ){
                 return true;
            }
            return false;
@@ -386,7 +462,6 @@
         public function __destruct() {
             self::$conexion = null; // Cierra la conexión cuando el objeto se destruye
         }
-    
         
 
     }

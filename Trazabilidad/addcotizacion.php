@@ -98,6 +98,7 @@ $obcli = new Cliente();
         <div class="row">
                <label class="txt-11 text-secondary col-12 col-sm-1">FOLIO</label>
                <div class="txt-11 col-12 col-sm-1" style="padding:5px;display:flex"><p id="displayFolio" style="color:red;">VACIO</p></div>
+
                <input type="hidden" id="folio" name="folio" value="">
 
                <label for="sucursal" class="txt-11 text-secondary col-12 col-sm-1">SUCURSAL</label>
@@ -112,9 +113,10 @@ $obcli = new Cliente();
 
                 <label for="fecha" class="txt-11 text-secondary col-12 col-sm-1">FECHA</label>
                 <input type="date" name="fecha" id="fecha" required class="form-control col-12 col-sm-2"  >
-
                 <label for="listRevision" class="txt-11 text-secondary col-sm-1">REVISIÓN</label>
-                <select onchange="return dataRevision(this.value)" name="revision" class="form-control col-sm-2"  id="listRevision"></select>
+                <select onchange="return dataRevision(this.value)" name="revision" class="form-control col-sm-2" id="listRevision"></select>
+
+                
                
             
         </div>
@@ -294,7 +296,7 @@ $obcli = new Cliente();
                   
                     <table class="table-stripped table-bordered table-cotizacion" width="110%" id="table" style="background-color: white;font-size:11px;">
                         <thead style="position: sticky;top:0;z-index: 10;" class="table-info" >
-                          <tr ondblclick='addServcot(<?php echo json_encode($data); ?>,undefined,<?php echo json_encode($tipo); ?>)'>
+                          <tr>
                             <th width="5%">PDA</th>
                             <th width="5%">CANT.</th>
                             <th width="6%">UNIDAD</th>
@@ -337,7 +339,7 @@ $obcli = new Cliente();
 
                             <td valign="top"><input name="subtotal[]" type="text" id="subtotalNew-0" data-pre="subtotal" readonly class="form-control form-control-sm subtotal <?php echo $viewCosto; ?>" autocomplete="off"></td>
 
-                            <td valign="top"><textarea id="clave" name="clave[]" class="form-control" autocomplete="off" style="resize:none;height:30px;" oninput="autoResize(this);" spellcheck="false"></textarea></td>
+                            <td valign="top"><textarea id="" name="clave[]" class="form-control" autocomplete="off" style="resize:none;height:30px;" oninput="autoResize(this);" spellcheck="false"></textarea></td>
 
                             <td valign="top"><input id="itemNew-0"  name="item[]" type="text"  class="form-control form-control-sm" autocomplete="off"></td>
                         </tr>
@@ -387,7 +389,7 @@ $obcli = new Cliente();
                     <div class="col-12 col-sm-5" style="margin-top: -5px;">
                         
                             <label for="observaciones" class="txt-11 text-secondary ">OBSERVACIONES</label>
-                            <textarea class="form-control  col-12 " id="observaciones" name="observaciones" style="margin-top:-10px" rows="3"></textarea><br>
+                            <textarea class="form-control col-12 scrollHidden" id="observaciones" name="observaciones" onfocus="mostrarScroll(this.id)" onblur="ocultarScroll(this.id)" style="margin-top:-10px" rows="3"></textarea><br>
                             <div class="row">
                                 <div class="col-6" style="padding:0px">
                                         <button  class="btn btn-sm btn-outline-success" id="guardar" style="white-space:normal;word-wrap:break-word" ><span class="fa fa-print"></span> IMP. COTIZACION SIN IVA</button>
@@ -471,7 +473,7 @@ $obcli = new Cliente();
   include_once '../dependencias/php/footer.php';
 ?>
 
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.1"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.4"></script>
 <script type="text/javascript" src="../dependencias/js/Trazabilidad/Presupuesto.js"></script>
 
 <script>
@@ -501,3 +503,16 @@ $obcli = new Cliente();
         */
 </script>
 
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
+
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>

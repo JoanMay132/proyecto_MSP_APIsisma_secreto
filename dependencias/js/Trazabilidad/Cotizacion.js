@@ -69,7 +69,7 @@ async function Sucursal(valor, data = {},em = "",responsable = ""){
     
     
     //Se actuliza la lista de revisiones
-    $.ajax({
+     $.ajax({
         type: "POST",
         data: {"sucursal": valor},
         url: "Cargas/loadRevision.php",
@@ -121,7 +121,7 @@ async function Sucursal(valor, data = {},em = "",responsable = ""){
     //Se actuliza la lista de empleado por sucursal
     $.ajax({
         type: "POST",
-        data: {"sucursal": valor},
+        data: {"sucursal": valor, "soloActivos": "1"},
         url: "Cargas/loadEmpleados.php",
         dataType: "json",
         success:function(respuesta){
@@ -221,7 +221,7 @@ function viewDepto(cliente){
 }
 
 //Consulta la revision preeliminar
-function dataRevision(id, cot = "")
+function dataRevision(id)
 {
     $.ajax({
         type: "POST",
@@ -254,7 +254,7 @@ function dataRevision(id, cot = "")
            // },300);
 
             //Se muestran los totales
-            await Servicios(revision,cot);
+            await Servicios(revision);
 
             await viewCambio(respuesta.cliente);
             await Cambio();
@@ -268,25 +268,92 @@ function dataRevision(id, cot = "")
 }
 
 //Carga los servicios en la tabla
-async function Servicios(rev, cot = ""){
+async function Servicios(rev){
     await $.ajax({
         type: "POST",
-        data: {"id": rev, "cot": cot},
+        data: {"id": rev},
         url: "Cargas/servicioLev.php",
         success:function(respuesta){
-            let tabla = document.querySelector("#table tbody");
-            tabla.innerHTML = respuesta;
-            let area = document.querySelectorAll(".cajas-texto")
-            area.forEach((elemento) => {
-                elemento.style.height = `${elemento.scrollHeight}px`
-            })
+            let tabla = document.getElementById("serv-cotizacion");
+            let fila0 = document.getElementById("serv-0");
 
-            return true;
+            //Carga los servicios amtes de serv-0
+            fila0.insertAdjacentHTML('beforebegin', respuesta);
+
+            //tabla.innerHTML = respuesta;
+            let area = document.querySelectorAll(".cajas-texto")
+          area.forEach((elemento) => {
+            elemento.style.height = `${elemento.scrollHeight}px`
+          })
+        
+          return true;
         }
     
     });
 
     return false;
+}
+//Asigna el folio
+function setFolio(){
+
+    var sucursal = document.getElementById('sucursal').value;
+    let fecha = document.getElementById('fecha').value;
+    let iva = document.getElementById('iva').value;
+    $.ajax({
+        type: "POST",
+        data: {"setFolio": "true","sucursal":sucursal,"fecha":fecha,"iva":iva},
+        url: "Controller/Cotizacion.php",
+        dataType: "json",
+        success:function(respuesta){
+            if(('Error_de_folio' in respuesta) == true){
+                display = "<div style='font-size:14px'>" + respuesta.Error_de_folio+"</div>";
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    html:display,
+                    showConfirmButton: true,
+                    width:'auto',
+                    position:'center'
+                    //timer: 1500,
+                  });
+                  return false;
+                }else if(respuesta.error){
+                   
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'info',
+                            title: respuesta.error,
+                            showConfirmButton: true,
+                            width: '500',
+                            //timer: 1500,
+                        })
+        
+                        return false;
+                    
+                }
+
+                 $('#displayFolio').text(respuesta.folio);
+                 var form = document.getElementById('form-cotizacion');
+                 var hidden = "<input type='hidden' name='cotizacion' value='"+respuesta.cotizacion+"'>"
+                
+                 const divContenedor = document.createElement('div');
+                divContenedor.innerHTML = hidden;
+
+                // Agregar el contenedor al formulario
+                form.appendChild(divContenedor);
+                 
+                $('#btnfolio').css({
+                    'pointer-events': 'none'
+                });
+
+                if(window.opener)
+                {
+                    var display = window.opener;
+                    display.$('#display-cotizacion').load(display.location.href + ' .display-table');//actualizas el div
+                    
+                }
+        }
+    });
 }
 
 //Registro de Cotizacion
@@ -304,6 +371,7 @@ function addCotizacion(rev = "",print=false,iva = false) {
        processData: false,
        contentType: false,
        success:async function(respuesta){
+        
         if(('success' in respuesta) == true){
             if (print) {
                 let moneda = document.getElementById('tagmoneda') ?? null;
@@ -324,7 +392,21 @@ function addCotizacion(rev = "",print=false,iva = false) {
                 position:'center',
                 timer: 1500,
             });     
-        }else{
+        }
+        else if('error_folio' in respuesta){
+            btnSave.disabled = false;
+            btnPrint.disabled = false;
+            await Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                text:respuesta.error_folio,
+                showConfirmButton: false,
+                width:'auto',
+                position:'center',
+                timer: 2500,
+            }); return false;
+        }
+        else{
             btnSave.disabled = false;
             btnPrint.disabled = false;
             await Swal.fire({
@@ -394,13 +476,14 @@ function menu(data,sub = ""){
         
         
         $('#presupuesto').removeAttr('onclick'); //Se remueve el atributo
+        $('#presupuestoind').removeAttr('onclick'); //Se remueve el atributo
         $('#servicio').removeAttr('onclick'); //Se remueve el atributo
         $('#eliminar').removeAttr('onclick'); //Se remueve el atributo
         if(pre != null ){
            
-            $('#presupuesto').attr('onclick','cargaPresupuesto("'+pre.value+'","'+id+'","'+sub+'")'); 
-            
-            
+            $('#presupuesto').attr('onclick','cargaPresupuesto("'+pre.value+'","'+id+'","'+sub+'")');
+            $('#presupuestoind').attr('onclick','cargaPresupuestoInd("'+pre.value+'","'+id+'","'+sub+'")'); 
+             
             $("#eliminar").on("click",function () {
                 if(sub != ""){
                     eliminarFila(data,pre.value,'true',branchSelec);
@@ -408,6 +491,7 @@ function menu(data,sub = ""){
             });
         }else{
             $('#presupuesto').attr('onclick','NotificationPre()'); 
+            $('#presupuestoInd').attr('onclick','NotificationPre()');
             $("#eliminar").on("click", function () {
            
                 eliminarFila(data);
@@ -486,7 +570,7 @@ function NotificationPre(){
 async function cargaPresupuesto(id,fila = "",sub = "")
 {
     const suc = document.querySelector("[name='sucursal']").value;
-    const cot = document.querySelector("[name='pkcotizacion']").value;
+    const cot = document.querySelector("[name='cotizacion']").value;
     const cli = document.querySelector("[name='cliente']").value;
 
     console.log(sub);
@@ -506,6 +590,35 @@ async function cargaPresupuesto(id,fila = "",sub = "")
                     return true;
                 }else{
                     const url = `../Presupuesto/presupuesto?suc=${suc}&cot=${cot}&cli=${cli}&fila=${fila}&carga=true&sub=${sub}`;                    
+                   windowPresupuesto(url);
+                }
+        }
+    });
+}
+
+async function cargaPresupuestoInd(id,fila = "",sub = "")
+{
+    const suc = document.querySelector("[name='sucursal']").value;
+    const cot = document.querySelector("[name='cotizacion']").value;
+    const cli = document.querySelector("[name='cliente']").value;
+
+    console.log(sub);
+
+    await $.ajax({
+        type: "POST",
+        data: {accion: 'findServcot', valor:id, sub : sub},
+        url: "../Presupuesto/Controller/Presupuestoind",
+        success:async function(respuesta){        
+                  console.log(respuesta);
+                if(respuesta != ''){
+                    let idpre = respuesta.replace(/"/g,'');
+
+                    //Abre la ventana modal
+                    const url = "../Presupuesto/epresupuestoind?edit="+idpre+"&fila="+fila;
+                    windowPresupuesto(url);
+                    return true;
+                }else{
+                    const url = `../Presupuesto/presupuestoind?suc=${suc}&cot=${cot}&cli=${cli}&fila=${fila}&carga=true&sub=${sub}`;                    
                    windowPresupuesto(url);
                 }
         }
@@ -601,6 +714,7 @@ function saveSubcotizacion(formData,nuevo = false,print = false,iva = false) {
             processData: false,
             contentType: false,
             success:async function(respuesta){
+                console.log(respuesta);
                 if(('success' in respuesta) == true){
                     if(!nuevo){
                         await Swal.fire({

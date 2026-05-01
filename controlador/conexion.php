@@ -21,8 +21,8 @@ class Conexion{
 
     private  $conect = [
         "server" => "localhost",
-        "user" => "mspetrol_freddy",
-        "password" => "DJFreddyH94",
+        "user" => "root",
+        "password" => "",
         "database" => "mspetrol_msp_api",
         "port" =>""
     ];

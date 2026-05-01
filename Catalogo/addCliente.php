@@ -235,4 +235,16 @@
     </script>
 
 
-    
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
+
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>    

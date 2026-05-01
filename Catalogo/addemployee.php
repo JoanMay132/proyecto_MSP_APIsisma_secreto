@@ -184,4 +184,16 @@ $modifica = in_array(Operacion::modifica->value, $rol->getOperacion()) ? true : 
 <script src="../dependencias/js/cargas.js" type="text/javascript"></script>
 <script type="text/javascript" src="../dependencias/js/Catalogo/Employee.js"></script>
 
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
 
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>

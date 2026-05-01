@@ -8,8 +8,9 @@ if(!filter_var($idsuc,FILTER_VALIDATE_INT)){ return false;}
 
 $oEmp = new Employee();
 $datas = array(); // Vaciamos el arreglo
+$soloActivos = isset($_POST['soloActivos']) && $_POST['soloActivos'] == '1';
 
-foreach($oEmp->GetDataAll($idsuc) as $data){
+foreach(($soloActivos ? $oEmp->GetDataActiveBySucursal($idsuc) : $oEmp->GetDataAll($idsuc)) as $data){
     $datas[] = array(base64_encode($data["pkempleado"]),$data["nombre"].' '.$data["apellidos"]);
 }
 echo json_encode($datas);

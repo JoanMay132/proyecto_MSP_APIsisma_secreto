@@ -12,9 +12,35 @@
 		}
 
         public function AddFolio($folio,$sucursal,$fecha): bool{
-            $query = self::$conexion->prepare('INSERT INTO orden (folio,fksucursal,fecha) VALUES (?,?,?) ');
+            $query = self::$conexion->prepare('INSERT INTO orden (
+                folio,
+                fksucursal,
+                fkcliente,
+                fkusercli,
+                fkcotizacion,
+                fecha,
+                depto,
+                diaentrega,
+                tipo,
+                observaciones,
+                fkeproduccion,
+                fkeenterado
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ');
 
-            if($query->execute(array($folio,$sucursal,$fecha)) > 0){
+            if($query->execute(array(
+                $folio,
+                $sucursal,
+                0,
+                0,
+                0,
+                $fecha,
+                '',
+                0,
+                'normal',
+                '',
+                0,
+                0
+            )) > 0){
                 $this->pkorden = self::$conexion->lastInsertId();
                return true;
             }
@@ -81,6 +107,18 @@
             return $query;
         }
 
+        public function GetByCotizacion(int $cotizacion, int $sucursal = 0){
+            if($sucursal > 0){
+                $query = self::$conexion->prepare('SELECT pkorden, fkcotizacion FROM orden WHERE fkcotizacion = ? AND fksucursal = ? ORDER BY pkorden DESC LIMIT 1');
+                $query->execute(array($cotizacion, $sucursal));
+            }else{
+                $query = self::$conexion->prepare('SELECT pkorden, fkcotizacion FROM orden WHERE fkcotizacion = ? ORDER BY pkorden DESC LIMIT 1');
+                $query->execute(array($cotizacion));
+            }
+
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }
+
         public function Update(array $data) : bool{
            
             $query = self::$conexion->prepare('UPDATE orden SET 
@@ -143,7 +181,7 @@
             cotizacion.folio AS folioCot FROM orden
         LEFT JOIN cotizacion ON orden.fkcotizacion = cotizacion.pkcotizacion
         LEFT JOIN cliente ON orden.fkcliente = cliente.pkcliente 
-        LEFT JOIN empleado ON orden.fkeproduccion = empleado.pkempleado WHERE orden.fksucursal = ? AND YEAR(orden.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "A", -1) AS UNSIGNED) DESC,folio DESC');
+        LEFT JOIN empleado ON orden.fkeproduccion = empleado.pkempleado WHERE orden.fksucursal = ? AND YEAR(orden.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "C", -1) AS UNSIGNED) DESC,folio DESC');
             $query->execute(array($data,$anio));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
@@ -276,7 +314,6 @@
         public function __destruct() {
             self::$conexion = null; // Cierra la conexión cuando el objeto se destruye
         }
-    
 
     }
 

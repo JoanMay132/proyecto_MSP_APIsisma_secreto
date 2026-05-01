@@ -1,12 +1,14 @@
 window.onload = function () {
     $(".loader").fadeOut("slow");
+    
+    var men = $("#menu");
+        men.hide();
+    
     var textarea = document.getElementsByClassName('scrollHidden');
     for (let index = 0; index < textarea.length; index++) {
          textarea[index].style.overflow = 'hidden';
 
     }
-    var men = $("#menu");
-        men.hide();
 
 };
 function setFolio() {
@@ -162,7 +164,7 @@ async function Sucursal(valor, data = {}, em = "") {
     //Se actuliza la lista de empleado por sucursal
     await $.ajax({
         type: "POST",
-        data: { "sucursal": valor },
+        data: { "sucursal": valor, "soloActivos": "1" },
         url: "Cargas/loadEmpleados.php",
         dataType: "json",
         success: function (respuesta) {

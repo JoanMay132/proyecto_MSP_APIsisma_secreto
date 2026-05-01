@@ -354,50 +354,23 @@ if(!empty($resultado)){
 <?php
   include_once '../dependencias/php/footer.php';
 ?>
-<script type="text/javascript" src="../dependencias/js/Compras/Ocompra.js"></script>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
-    
-    
-    
-                // document.getElementById('nrequisicion').addEventListener("change", async (event) => {
-                //     const opcionSeleccionada = document.getElementById('nrequisicion').value;
-                //     // Llama a la función directamente sin agregar otro listener.
-                //     await dataRequisicion(opcionSeleccionada);
-                // });
-            
-                const selectElement = document.getElementById('nrequisicion');
-
-// Variable para rastrear la última opción seleccionada
-let lastValue = selectElement.value;
-
-// Manejar el evento 'change' para ejecutar la función
-selectElement.addEventListener("change", async (event) => {
-  const selectedValue = event.target.value;
-  
-  // Ejecutamos la función dataRequisicion solo si se ha seleccionado un valor válido
-  if (selectedValue) {
-    await dataRequisicion(selectedValue);
-    lastValue = selectedValue; // Actualizamos lastValue solo si hay un valor válido
-  }
-});
-
-// Manejar el evento 'mousedown' para permitir la selección repetida
-selectElement.addEventListener("mousedown", (event) => {
-  selectElement.value = ""; // Esto permite que se dispare el evento change
-});
-
-
-
-// // Manejar el clic en el documento para restablecer el valor si se hace clic fuera del select
- document.addEventListener("click", (event) => {
-  if (event.target !== selectElement && !selectElement.value) {
-    selectElement.value = lastValue; // Restauramos el valor anterior si no se selecciona nada
-  }
-});
-
-
 </script>
 
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
+
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>
+<script src="/mspapisisma/dependencias/js/Compras/Ocompra.js?v=1.0.1"></script>

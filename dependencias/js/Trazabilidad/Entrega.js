@@ -58,6 +58,26 @@ function setFolio() {
     return false;
 }
 
+var in_rev = 1;
+function addServentrega(data) {
+    var fila = '<tr style="max-height: 80px;" ondblclick=\'addServentrega(' + JSON.stringify(data) +')\' id="serv-' + in_rev + '">' +
+        '<td valign="top"><input name="pda[]" type="number" min="0.00" step="0.01" class="form-control form-control-sm " name="pda" autocomplete="off"></td>' +
+        '<td valign="top"><input name="cant[]" id="cantidadNew-' + in_rev + '" data-pre="cantidad"  type="number" min="0.00" step="0.01" class="form-control form-control-sm" autocomplete="off"></td>' +
+        '<td valign="top"><select name="unidad[]" class="form-control form-control-sm"><option value=""></option>';
+    for (let index = 0; index < data.length; index++) {
+        var option = data[index];
+        fila += '<option value="' + option.pkunidad + '">' + option.nombre + '</option>';
+
+    }
+    fila += '</select></td>' +
+        '<td valign="top"><textarea oninput="autoResize(this)" id="descNew-' + in_rev + '" name="descripcion[]" class="form-control cajas-texto scrollHidden" autocomplete="off" style="resize:none;height:30px;" onclick="menu(this); return false;" onfocus="mostrarScroll(\'descNew-' + in_rev + '\')" onblur="ocultarScroll(\'descNew-' + in_rev + '\')" ></textarea></td>' +
+        '</tr>';
+
+    $('.table-ent').append(fila)
+
+    in_rev++;
+}
+
 function autoResize(textarea) {
     textarea.style.height = "30px"; // Restaura la altura automática
     // Ajusta la altura del textarea según el contenido
@@ -146,7 +166,7 @@ async function Sucursal(valor, data = {}, em = "") {
     //Se actuliza la lista de empleado por sucursal
     await $.ajax({
         type: "POST",
-        data: { "sucursal": valor },
+        data: { "sucursal": valor, "soloActivos": "1" },
         url: "Cargas/loadEmpleados.php",
         dataType: "json",
         success: function (respuesta) {
@@ -243,6 +263,47 @@ async function dataOrden(id, ot = "") {
             await viewDepto(respuesta.solicito);
 
             await Servicios(orden, ot);
+        }
+    });
+}
+
+//Consulta la cotizacion y obtiene la O.T. relacionada
+async function dataCotizacion(id) {
+    if (id === '') {
+        return false;
+    }
+
+    const sucursal = document.getElementById("sucursal").value;
+    if (sucursal === '') {
+        Swal.fire({
+            position: 'center',
+            icon: 'info',
+            title: 'Seleccione sucursal',
+            showConfirmButton: true,
+            width: 'auto'
+        });
+        return false;
+    }
+
+    $.ajax({
+        type: "POST",
+        data: { "id": id, "sucursal": sucursal },
+        url: "Cargas/loadOrdenByCotizacion.php",
+        dataType: "json",
+        success: async function (respuesta) {
+            if (respuesta.error) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: respuesta.error,
+                    showConfirmButton: true,
+                    width: 'auto'
+                });
+                return false;
+            }
+
+            document.getElementById("listorden").value = respuesta.orden;
+            await dataOrden(respuesta.orden);
         }
     });
 }

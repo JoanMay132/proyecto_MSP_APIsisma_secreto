@@ -37,23 +37,34 @@ if(!filter_var($suc,FILTER_VALIDATE_INT)){
 if (isset($_POST["setFolio"]) && @$_POST["setFolio"] == "true") {
 
     $fksucursal = (int) base64_decode($_POST['sucursal']);
-    $fecha = Helper::val_input($_POST['fecha']);
+    $fechaorden = Helper::val_input($_POST['fechaorden']);
+    $fechaentrega = Helper::val_input($_POST['fechaentrega']);
     $query = "AND fksucursal = " . $fksucursal . "";
 
     if ($fksucursal != '') {
-        if($_POST['fecha'] == ''){
+        if($fechaorden == ''){
             $resp["error"] = 'El campo fecha orden es obligatorio';
             echo json_encode($resp);
             return false;
         }
+
+        if($fechaentrega == ''){
+            $resp["error"] = 'El campo fecha entrega es obligatorio';
+            echo json_encode($resp);
+            return false;
+        }
         $oFolio = new Folio("ocompra", "folio", $query);
-        if ($oReq->AddFolio($oFolio->getFolio(), $fksucursal,$fecha)) {
+        if ($oReq->AddFolio($oFolio->getFolio(), $fksucursal, $fechaorden, $fechaentrega)) {
             $resp["pkocompra"] = base64_encode($oReq->pkocompra);
             $resp["folio"] = $oFolio->getFolio();
             echo json_encode($resp);
 
             return true;
         }
+
+        $resp["error"] = 'No se pudo asignar folio';
+        echo json_encode($resp);
+        return false;
     } else {
         $resp["error"] = 'No se ha seleccionado sucursal';
         echo json_encode($resp);

@@ -50,6 +50,11 @@ $obcli = new Cliente();
     input[type="radio"]{
         transform: scale(0.6) !important;
     }
+    
+    /*
+    table .form-control:focus{
+        border: 1px solid #80bdff;
+    }*/
 
     table .form-control{
         height: 30px;
@@ -158,7 +163,7 @@ $obcli = new Cliente();
                         <tbody class="text-secondary body-table" id="serv-ot">                  
                           <tr style="max-height: 80px;" ondblclick='addServot(<?php echo json_encode($data); ?>,<?php echo json_encode($tipo); ?>)' id="serv-0">
                             <td valign="top"><input name="pda[]" type="number" min="0.00" step="0.01" class="form-control form-control-sm text-center"  autocomplete="off" inputmode="numeric"></td>
-                            <td valign="top"><input type="number" name="cant[]"  min="0.00" step="0.01" class="form-control form-control-sm text-center"  autocomplete="off"></td>
+                            <td valign="top"><input type="number" name="cant[]"  min="0" step="1" class="form-control form-control-sm text-center"  autocomplete="off"></td>
                             <td valign="top">
                                 <select name="unidad[]" class="form-control form-control-sm text-center">
                                     <option value=""></option>
@@ -167,7 +172,7 @@ $obcli = new Cliente();
                                     <?php } ?>
                                 </select>
                             </td>
-                            <td valign="top"><textarea name="descripcion[]" id="descNew-0" class="form-control form-control-sm cajas-texto scrollHidden" autocomplete="off" style="resize:none;height:30px;"  onclick="menu(this); return false;"  oninput="autoResize(this);" spellcheck="false" onfocus="mostrarScroll('descNew-0')" onblur="ocultarScroll('descNew-0')"></textarea></td>
+                            <td valign="top"><textarea name="descripcion[]" id="descNew-0" class="form-control form-control-sm cajas-texto" autocomplete="off" style="resize:none;height:30px;"  onclick="menu(this); return false;"  oninput="autoResize(this);" spellcheck="false" onfocus="mostrarScroll('descNew-0')" onblur="ocultarScroll('descNew-0')"></textarea></td>
                             <td valign="top" >
                                 <select name="ttrabajo[]" class="form-control form-control-sm" style="text-align: justify;white-space:wrap;padding:0px">
                                         <option value=""></option>
@@ -257,7 +262,22 @@ $obcli = new Cliente();
 <?php
   include_once '../dependencias/php/footer.php';
 ?>
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Orden.js?v=1.0.0"></script>
+
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
+
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>
+
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Orden.js?v=1.0.1"></script>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()

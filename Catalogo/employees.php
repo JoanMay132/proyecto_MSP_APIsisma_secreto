@@ -56,6 +56,31 @@ $obuser = new Usuario();
     background: steelblue;
     color: white;
   }
+
+  .status-select {
+    width: 105px;
+    height: 22px;
+    font-size: 11px;
+    border: 1px solid transparent;
+    color: #fff;
+    font-weight: 600;
+    padding: 0 6px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .status-select.status-active {
+    background-color: #198754 !important;
+    border-color: #146c43 !important;
+  }
+
+  .status-select.status-inactive {
+    background-color: #dc3545 !important;
+    border-color: #b02a37 !important;
+  }
 </style>
 <div class="main-wrapper">
   <!-- ! Main -->
@@ -123,7 +148,23 @@ $obuser = new Usuario();
                     <td><?php echo $employee['curp']; ?></td>
                     <td><?php echo $employee['nss']; ?></td>
 
-                    <td><?php if ($dataH['baja'] === '0000-00-00') { ?><span class="badge-success">Activo</span><?php } else { ?><span class="badge-danger">Inactivo</span><?php } ?></td>
+                    <td>
+                      <?php $isActivo = ($dataH['baja'] === '0000-00-00'); ?>
+                      <?php if ($modifica) { ?>
+                        <select id="status-control-<?php echo base64_encode($employee['pkempleado']); ?>"
+                          class="status-select form-control form-control-sm <?php echo $isActivo ? 'status-active' : 'status-inactive'; ?>"
+                          style="height:24px;"
+                          data-prev="<?php echo $isActivo ? '1' : '0'; ?>"
+                          onchange="return updateEmployeeStatus(this,'<?php echo base64_encode($employee['pkempleado']); ?>','<?php echo base64_encode($employee['fksucursal']); ?>');">
+                          <option value="1" <?php echo $isActivo ? 'selected' : ''; ?>>Activo</option>
+                          <option value="0" <?php echo !$isActivo ? 'selected' : ''; ?>>Inactivo</option>
+                        </select>
+                      <?php } else { ?>
+                        <span class="<?php echo $isActivo ? 'badge-success' : 'badge-danger'; ?>">
+                          <?php echo $isActivo ? 'Activo' : 'Inactivo'; ?>
+                        </span>
+                      <?php } ?>
+                    </td>
                     <td><?php echo $dataH['alta'] ?></td>
                     <td>
                       <button type="button" class="dropdown-toggle" id="menu" data-bs-toggle="dropdown" aria-expanded="false" style="background:none"></button>

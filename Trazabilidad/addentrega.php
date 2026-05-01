@@ -115,7 +115,7 @@ $obcli = new Cliente();
                         <option value=""></option>
                     </select>
                     <label for="cotizacion" class="txt-11 text-secondary col-3 col-sm-3">COTIZACION</label>
-                    <select  name="cotizacion" id="cotizacion"  class="form-control form-control-sm col-3 col-sm-3" >
+                    <select  name="cotizacion" id="cotizacion" onchange="return dataCotizacion(this.value);" class="form-control form-control-sm col-3 col-sm-3" >
                         <option value=""></option>
                     </select>
                 </div>
@@ -150,7 +150,7 @@ $obcli = new Cliente();
         <div class="row">
             <div class="col-12" style="padding:2px">
                 <div style="height: 65vh;background:white;border:2px solid grey;overflow:auto;" class="scroll table-responsive">
-                <table class="table-bordered table-ot" width="100%" id="table" style="background-color: white;font-size:11px; border-collapse:collapse;">
+                <table class="table-bordered table-ent" width="100%" id="table" style="background-color: white;font-size:11px; border-collapse:collapse;">
                         <thead style="position: sticky;top:0;z-index: 10;" class="table-info" >
                           <tr>
                             <th width="5%">PDA</th>
@@ -160,7 +160,7 @@ $obcli = new Cliente();
                           </tr>
                         </thead>
                         <tbody class="text-secondary body-table" id="serv-ot">
-                          <tr style="max-height: 80px;" >
+                          <tr style="max-height: 80px;" ondblclick='addServentrega(<?php echo json_encode($data); ?>)' >
                             <td valign="top"><input name="pda[]" type="number" min="0.00" step="0.01" class="form-control text-center"  autocomplete="off" inputmode="numeric"></td>
                             <td valign="top"><input type="number" name="cant[]"  min="0.00" class="form-control  text-center"  autocomplete="off"></td>
                             <td valign="top">
@@ -171,7 +171,7 @@ $obcli = new Cliente();
                                     <?php } ?>
                                 </select>
                             </td>
-                            <td valign="top"><textarea name="descripcion[]" class="form-control cajas-texto" autocomplete="off" style="resize:none;padding:3px"  onclick="menu(this); return false;" data-servicio='servicios?row=0&new=true' oninput="autoResize(this);" spellcheck="false" onfocus="mostrarScroll('descNew-0')" onblur="ocultarScroll('descNew-0')"></textarea></td>
+                            <td valign="top"><textarea name="descripcion[]" id="descNew-0" class="form-control cajas-texto" autocomplete="off" style="resize:none;padding:3px"  onclick="menu(this); return false;" data-servicio='servicios?row=0&new=true' oninput="autoResize(this);" spellcheck="false" onfocus="mostrarScroll('descNew-0')" onblur="ocultarScroll('descNew-0')"></textarea></td>
 
                         </tr>
                             
@@ -212,19 +212,19 @@ $obcli = new Cliente();
         
         </form>
     </main>
-    <!--  
+     
     <div id="menu" class="context-menu">
         <ul>
-            <li><a id="presupuesto"><i class="fa fa-dollar fa-lg" style="color: green;margin-right:10px"></i>PRESUPUESTAR</a></li>
-            <li><a id="servicio" ><i class="fa fa-plus-square-o fa-lg" style="color:blue;margin-right:10px"></i>AGREGAR SERVICIO</a></li>
+            <!-- <li><a id="presupuesto"><i class="fa fa-dollar fa-lg" style="color: green;margin-right:10px"></i>PRESUPUESTAR</a></li>
+            <li><a id="servicio" ><i class="fa fa-plus-square-o fa-lg" style="color:blue;margin-right:10px"></i>AGREGAR SERVICIO</a></li> -->
             <li><a id="eliminar" ><i class="fa fa-trash-o fa-lg" style="color:red;margin-right:10px"></i>ELIMINAR REGISTRO</a></li>
         </ul>
-    </div> -->
+    </div>
     
 <?php
   include_once '../dependencias/php/footer.php';
 ?>
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Entrega.js"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Entrega.js?v=1.0.1"></script>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
@@ -234,3 +234,16 @@ $obcli = new Cliente();
     }
 </script>
 
+<!-- Adding alert to prevent accidental navigation away from the page -->
+<script>
+document.addEventListener("click", () => {
+    window.userInteracted = true;
+});
+
+window.addEventListener("beforeunload", function (event) {
+    if (window.userInteracted) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+</script>
