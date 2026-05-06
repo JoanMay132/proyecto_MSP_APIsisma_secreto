@@ -10,6 +10,7 @@ $popper = true;
 $obsuc = new Sucursal();
 $obunidad = new Unidad();
 $obcli = new Cliente();
+$viewCosto = '';
 
   foreach ($obunidad->GetDataAll() as $value) {
     $data[] = array("pkunidad" =>$value['pkunidad'],"nombre" =>$value['nombre']);
@@ -328,8 +329,7 @@ $obcli = new Cliente();
                                         <option value=""></option>
                                         <?php   
                                                 foreach ($tipo as $value) {
-                                                    $selTipo = $res['tipotrabajo'] == $value ? 'selected' : '';
-                                                    echo "<option ".$selTipo." value='".$value."'>".$value."</option>";
+                                                    echo "<option value='".$value."'>".$value."</option>";
                                                 }
                                         ?>
                                    
@@ -392,11 +392,11 @@ $obcli = new Cliente();
                             <textarea class="form-control col-12 scrollHidden" id="observaciones" name="observaciones" onfocus="mostrarScroll(this.id)" onblur="ocultarScroll(this.id)" style="margin-top:-10px" rows="3"></textarea><br>
                             <div class="row">
                                 <div class="col-6" style="padding:0px">
-                                        <button  class="btn btn-sm btn-outline-success" id="guardar" style="white-space:normal;word-wrap:break-word" ><span class="fa fa-print"></span> IMP. COTIZACION SIN IVA</button>
+                                        <button type="button" class="btn btn-sm btn-outline-success" id="guardar" style="white-space:normal;word-wrap:break-word" ><span class="fa fa-print"></span> IMP. COTIZACION SIN IVA</button>
                                     </div>
                                     
                                     <div class="col-6" style="padding:0px">
-                                        <button class="btn btn-sm btn-outline-warning" id="printIva" style="word-wrap:break-word"><span class="fa fa-print"></span> IMP. COTIZACION</button>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" id="printIva" style="word-wrap:break-word"><span class="fa fa-print"></span> IMP. COTIZACION</button>
                                     </div>
                             </div>
                     </div>
@@ -473,7 +473,7 @@ $obcli = new Cliente();
   include_once '../dependencias/php/footer.php';
 ?>
 
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.4"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.5"></script>
 <script type="text/javascript" src="../dependencias/js/Trazabilidad/Presupuesto.js"></script>
 
 <script>

@@ -317,7 +317,7 @@
                 empleado.apellidos FROM cotizacion
             LEFT JOIN cliente ON cotizacion.fkcliente = cliente.pkcliente
             LEFT JOIN deptocli ON cotizacion.fkdeptocli = deptocli.pkdeptocli 
-            LEFT JOIN empleado ON cotizacion.fkecotizo = empleado.pkempleado WHERE cotizacion.fksucursal = ? AND YEAR(cotizacion.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(folio, "/", 1), "C", -1) AS UNSIGNED) DESC,folio DESC');
+            LEFT JOIN empleado ON cotizacion.fkecotizo = empleado.pkempleado WHERE cotizacion.fksucursal = ? AND YEAR(cotizacion.fecha) = ? ORDER BY cotizacion.pkcotizacion DESC');
             $query->execute(array($data,$anio));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
@@ -325,9 +325,9 @@
 
         //Servicio de cotizacion
         public function AddServ($data): bool{
-            $query = self::$conexion->prepare('INSERT INTO servcotizacion(pda,cant,fkunidad,descripcion,tipotrabajo,preciounit,subtotal,clave,item,fkcotizacion) VALUES (?,?,?,?,?,?,?,?,?,?) ');
+            $query = self::$conexion->prepare('INSERT INTO servcotizacion(pda,cant,fkunidad,descripcion,tipotrabajo,preciounit,subtotal,clave,item,fkcotizacion,contenido,presupuesto) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ');
 
-            if($query->execute(array($data["pda"],$data["cantidad"],$data["unidad"],$data["descripcion"],$data["ttrabajo"],$data["costo"],$data["subtotal"],$data["clave"],$data["item"],$data["fkcotizacion"])) > 0){
+            if($query->execute(array($data["pda"],$data["cantidad"],$data["unidad"],$data["descripcion"],$data["ttrabajo"],$data["costo"],$data["subtotal"],$data["clave"],$data["item"],$data["fkcotizacion"],0,0)) > 0){
                return true;
             }
 

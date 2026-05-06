@@ -28,6 +28,29 @@ if(!$modifica){
 }
 //Fin de verificacion
 
+$cotizacionId = (int) base64_decode($_POST['cotizacion'] ?? ($_POST['pkcotizacion'] ?? 0));
+
+if((!isset($_POST["setFolio"]) || $_POST["setFolio"] !== "true") && $cotizacionId <= 0){
+    $fecha = Helper::val_input($_POST['fecha'] ?? '');
+    $iva = Helper::float($_POST['iva'] ?? 0);
+    $query = "AND fksucursal = ".$suc."";
+
+    if($fecha === ''){
+        $msg["error"] = 'El campo fecha es obligatorio';
+        echo json_encode($msg);
+        return false;
+    }
+
+    $oFolio = new Folio("cotizacion","folio",$query);
+    if(!$oCot->AddFolio($oFolio->getFolio(),$suc,$fecha,$iva)){
+        $msg["error"] = 'No se pudo asignar folio';
+        echo json_encode($msg);
+        return false;
+    }
+
+    $cotizacionId = (int) $oCot->pkcotizacion;
+}
+
 
 //Se asigna folio
 if(isset($_POST["setFolio"]) && $_POST["setFolio"] === "true"){
@@ -63,13 +86,6 @@ if(isset($_POST["setFolio"]) && $_POST["setFolio"] === "true"){
     }
 }
 
-if(!isset($_POST['cotizacion']) && @$_POST['cotizacion'] == ""){
-    $msg["error_folio"] = "No se ha asignado ningún Folio";
-    echo json_encode($msg);
-    return false;
-}
-
-
 $datos = array(
     // "folio" =>Helper::val_input($_POST['folio']),
     "fecha" => Helper::val_input($_POST['fecha']),
@@ -99,7 +115,7 @@ $datos = array(
     "factura1" => Helper::val_input($_POST['factura1']),
     "estado" => Helper::val_input($_POST['estado']),
     "factura2" => Helper::val_input($_POST['factura2']),
-    "ffactura" => Helper::val_input($_POST['ffactura']),
+    "ffactura" => ($tmpFechaFactura = Helper::val_input($_POST['ffactura'])) === '' ? Helper::val_input($_POST['fecha']) : $tmpFechaFactura,
     "observaciones" => Helper::val_input($_POST['observaciones']),
     "contenido" => Helper::float($_POST['cnacional']),
     "tmoneda" => Helper::val_input($_POST['tmoneda']),
@@ -109,7 +125,8 @@ $datos = array(
     "subtotal" => Helper::float($_POST['inputSubtotal']),
     "total" => Helper::float($_POST['inputTotal']),
     "revision" => (int) base64_decode($_POST['revision'] ?? 0),
-    "sucursal" => (int) base64_decode($_POST['sucursal'])
+    "sucursal" => (int) base64_decode($_POST['sucursal']),
+    "pkcotizacion" => $cotizacionId
 );
 
 
@@ -151,7 +168,6 @@ $datos = array(
     //     return false;
     // }
 
-    $datos['pkcotizacion'] =  (int) base64_decode($_POST['cotizacion']);
     if($oCot->Update($datos)){ //Actualiza los datos de la cotizacion
 
         //Actualiza los datos registrados

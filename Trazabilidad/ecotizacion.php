@@ -276,7 +276,7 @@ $oSubcot = new Subcotizacion();
                 </div>
                 <div class="form-group row" style="padding:2px;margin-top:-26px">
                     <label for="pcalidad" class="txt-11 text-secondary col-12 col-sm-4">PROCESOS DE CALIDAD:</label>
-                    <textarea id="pcalidad" name="pcalidad" class="form-control col-12 col-sm-8 scrollHidden" style="height:35px" onfocus="mostrarScroll('pcalidad')" onblur="ocultarScroll('pcalidad')">API Q1, ISO 9001 ULTIMA EDICION</textarea>
+                    <textarea id="pcalidad" name="pcalidad" class="form-control col-12 col-sm-8 scrollHidden" style="height:35px" onfocus="mostrarScroll('pcalidad')" onblur="ocultarScroll('pcalidad')"><?php echo nl2br($resCot['dnormativos']); ?></textarea>
 
                     
                 </div>
@@ -500,11 +500,11 @@ $oSubcot = new Subcotizacion();
                             <div class="row">
                                 <?php if($modifica){ ?>
                                 <div class="col-6" style="padding:0px">
-                                    <button  class="btn btn-sm btn-outline-success" id="guardar" style="white-space:normal;word-wrap:break-word" ><span class="fa fa-print"></span> IMP. COTIZACION SIN IVA</button>
+                                    <button type="button" class="btn btn-sm btn-outline-success" id="guardar" style="white-space:normal;word-wrap:break-word" ><span class="fa fa-print"></span> IMP. COTIZACION SIN IVA</button>
                                 </div>
                                 
                                 <div class="col-6" style="padding:0px">
-                                    <button class="btn btn-sm btn-outline-warning" id="printIva" style="word-wrap:break-word"><span class="fa fa-print"></span> IMP. COTIZACION</button>
+                                    <button type="button" class="btn btn-sm btn-outline-warning" id="printIva" style="word-wrap:break-word"><span class="fa fa-print"></span> IMP. COTIZACION</button>
                                 </div>
                                 <?php }else{?>
                                     <div class="col-6" style="padding:0px">
@@ -604,8 +604,8 @@ $oSubcot = new Subcotizacion();
  
 ?>
 
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.1"></script>
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Presupuesto.js"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.5"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Presupuesto.js?v=1.0.0"></script>
 
 <script>
     $(async function () {

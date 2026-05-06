@@ -8,6 +8,8 @@ window.onload = function() {
 
     exchangeRate();
   };
+
+let printCotWindow = null;
   
 
 function autoResize(textarea) {
@@ -362,24 +364,70 @@ function addCotizacion(rev = "",print=false,iva = false) {
     let btnPrint = document.getElementById("guardar");
     btnSave.disabled = true;
     btnPrint.disabled = true;
+    const cotActual = document.querySelector("[name='cotizacion']")?.value || document.querySelector("[name='pkcotizacion']")?.value || "";
+
    var formData = new FormData($('#form-cotizacion')[0]);
    $.ajax({
        type: "POST",
        data: formData,
        url: "Controller/Cotizacion.php",
-       dataType: 'json',
+       dataType: 'text',
        processData: false,
        contentType: false,
        success:async function(respuesta){
+        let data = null;
+        if (typeof respuesta === "string") {
+            try {
+                data = JSON.parse(respuesta);
+            } catch (e) {
+                const match = respuesta.match(/\{[\s\S]*\}/);
+                if (match) {
+                    try {
+                        data = JSON.parse(match[0]);
+                    } catch (e2) {
+                        data = null;
+                    }
+                }
+            }
+        } else {
+            data = respuesta;
+        }
+
+        if(!data){
+            btnSave.disabled = false;
+            btnPrint.disabled = false;
+
+            if(print && cotActual !== ""){
+                let moneda = document.getElementById('tagmoneda') ?? null;
+                if(moneda != null && moneda.value === 'DOLAR'){
+                    Print(cotActual,iva,"cotizacion","print_cotizacion",true);
+                }else{
+                    Print(cotActual,iva,"cotizacion","print_cotizacion");
+                }
+                return false;
+            }
+
+            await Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                text:'Respuesta invalida del servidor al guardar.',
+                showConfirmButton: false,
+                width:'auto',
+                position:'center',
+                timer: 2500,
+            });
+            return false;
+        }
         
-        if(('success' in respuesta) == true){
+        if(('success' in data) == true){
             if (print) {
                 let moneda = document.getElementById('tagmoneda') ?? null;
+                const cotPrint = data.cotizacion || cotActual;
 
                 if(moneda != null && moneda.value === 'DOLAR'){
-                    Print(respuesta.cotizacion,iva,"cotizacion","print_cotizacion",true);
+                    Print(cotPrint,iva,"cotizacion","print_cotizacion",true);
                 }else{
-                    Print(respuesta.cotizacion,iva,"cotizacion","print_cotizacion");
+                    Print(cotPrint,iva,"cotizacion","print_cotizacion");
                 }
                 
             }
@@ -393,13 +441,13 @@ function addCotizacion(rev = "",print=false,iva = false) {
                 timer: 1500,
             });     
         }
-        else if('error_folio' in respuesta){
+        else if('error_folio' in data){
             btnSave.disabled = false;
             btnPrint.disabled = false;
             await Swal.fire({
                 position: 'top-end',
                 icon: 'error',
-                text:respuesta.error_folio,
+                text:data.error_folio,
                 showConfirmButton: false,
                 width:'auto',
                 position:'center',
@@ -412,7 +460,7 @@ function addCotizacion(rev = "",print=false,iva = false) {
             await Swal.fire({
                 position: 'top-end',
                 icon: 'error',
-                text:respuesta.Error,
+                text:data.Error || 'No se pudo guardar la cotizacion.',
                 showConfirmButton: false,
                 width:'auto',
                 position:'center',
@@ -425,7 +473,7 @@ function addCotizacion(rev = "",print=false,iva = false) {
            }
            else{
 
-               document.location.href = "ecotizacion?edit="+respuesta.cotizacion;
+               document.location.href = "ecotizacion?edit="+data.cotizacion;
            }
            
            if(window.opener)
@@ -435,6 +483,30 @@ function addCotizacion(rev = "",print=false,iva = false) {
                    
                }
                
+       },
+      error: async function(xhr){
+            btnSave.disabled = false;
+            btnPrint.disabled = false;
+
+            if(print && cotActual !== ""){
+                let moneda = document.getElementById('tagmoneda') ?? null;
+                if(moneda != null && moneda.value === 'DOLAR'){
+                    Print(cotActual,iva,"cotizacion","print_cotizacion",true);
+                }else{
+                    Print(cotActual,iva,"cotizacion","print_cotizacion");
+                }
+                return false;
+            }
+
+            await Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                text:'No se pudo generar el PDF. Intente nuevamente.',
+                showConfirmButton: false,
+                width:'auto',
+                position:'center',
+                timer: 2500,
+            });
        }
    });
 
@@ -765,8 +837,17 @@ function saveSubcotizacion(formData,nuevo = false,print = false,iva = false) {
 }
 
 function SentForm(form) {
-    form.oninvalid();
-    form.onsubmit();
+    if(!form.checkValidity()){
+        form.reportValidity();
+        return false;
+    }
+
+    if(typeof form.onsubmit === "function"){
+        return form.onsubmit();
+    }
+
+    form.submit();
+    return true;
 }
 
 function setName(data,sub, branch){
@@ -801,8 +882,18 @@ function setName(data,sub, branch){
 function Print(respuesta,iva,tipo,name,dolar = false){
                 let izquierda = Math.round((screen.width - 800) / 2);
                 let arriba = Math.round((screen.height - 1000) / 2);
-                
-                window[name] ? window[name].focus() : window.open("print/"+tipo+"?cotizacion=" + respuesta+"&iva="+iva+"&moneda="+dolar, name, "width=800,height=1000,scrollbars=yes,left=" + izquierda + ",top=" + arriba + ",addressbar=0,menubar=0,toolbar=0");
+                let url = "print/"+tipo+"?cotizacion=" + respuesta+"&iva="+iva+"&moneda="+dolar;
+                let ventana = printCotWindow && !printCotWindow.closed ? printCotWindow : window[name];
+
+                if(!ventana || ventana.closed){
+                    ventana = window.open("about:blank", name, "width=800,height=1000,scrollbars=yes,left=" + izquierda + ",top=" + arriba + ",addressbar=0,menubar=0,toolbar=0");
+                }
+
+                if(ventana){
+                    printCotWindow = ventana;
+                    ventana.location.href = url;
+                    ventana.focus();
+                }
 }
 
 function Add(valor){
@@ -813,6 +904,19 @@ function Add(valor){
 
 if(document.getElementById("guardar")){
     document.getElementById("guardar").addEventListener("click", function () {
+        const area = document.getElementById('area');
+        if(area && !area.value){
+            area.reportValidity();
+            area.focus();
+            return false;
+        }
+
+        let ventanaPrint = window.open("about:blank", "print_cotizacion", "width=800,height=1000,scrollbars=yes,left=200,top=50,addressbar=0,menubar=0,toolbar=0");
+        if(ventanaPrint){
+            printCotWindow = ventanaPrint;
+            ventanaPrint.document.write('<p style="font-family:Arial,sans-serif;padding:20px">Generando PDF...</p>');
+            ventanaPrint.document.close();
+        }
 
         $('#form-cotizacion').attr('onsubmit', "return addCotizacion('',true);");
         let form = document.getElementById('form-cotizacion');
@@ -822,6 +926,20 @@ if(document.getElementById("guardar")){
 
 if(document.getElementById("printIva")){
     document.getElementById("printIva").addEventListener("click", function () {
+        const area = document.getElementById('area');
+        if(area && !area.value){
+            area.reportValidity();
+            area.focus();
+            return false;
+        }
+
+        let ventanaPrint = window.open("about:blank", "print_cotizacion", "width=800,height=1000,scrollbars=yes,left=200,top=50,addressbar=0,menubar=0,toolbar=0");
+        if(ventanaPrint){
+            printCotWindow = ventanaPrint;
+            ventanaPrint.document.write('<p style="font-family:Arial,sans-serif;padding:20px">Generando PDF...</p>');
+            ventanaPrint.document.close();
+        }
+
         $('#form-cotizacion').attr('onsubmit', "return addCotizacion('',true,true);");
         let form = document.getElementById('form-cotizacion');
         SentForm(form);
