@@ -345,13 +345,13 @@ $oSubcot = new Subcotizacion();
                         <tr style="max-height: 80px;" ondblclick='addServcot(<?php echo json_encode($data); ?>,"<?php echo $viewCosto; ?>",<?php echo json_encode($tipo); ?>)' id="serv-0">
                             <input type="hidden" name="fkcatserv[]" id="fkcatserv-<?php echo $contador; ?>">
                             <input type="hidden" name="pkservcotizacion[]" value="<?php echo base64_encode($res['pkservcot']); ?>">
-                            <input type="hidden" name="contenido[]" value="<?php echo $res['contenido']; ?>">
-                            <td valign="top"><input name="pda[]" type="number" min="0.00" step="0.01" class="form-control form-control-sm"  autocomplete="off" value="<?php echo $res['pda'] ?>"></td>
+                            <input type="hidden" name="contenidoReg[]" value="<?php echo $res['contenido']; ?>">
+                            <td valign="top"><input name="pdaReg[]" type="number" min="0.00" step="0.01" class="form-control form-control-sm"  autocomplete="off" value="<?php echo $res['pda'] ?>"></td>
 
-                            <td valign="top"><input type="number" name="cant[]" min="0.00" step="0.01" data-pre="cantidad" id="cantidad-<?php echo $contador; ?>" onblur="Subtotal(this); totales(); CalculaContenido();" class="form-control form-control-sm" autocomplete="off" value="<?php echo $res['cant'] ?>"></td>
+                            <td valign="top"><input type="number" name="cantReg[]" min="0.00" step="0.01" data-pre="cantidad" id="cantidad-<?php echo $contador; ?>" onblur="Subtotal(this); totales(); CalculaContenido();" class="form-control form-control-sm" autocomplete="off" value="<?php echo $res['cant'] ?>"></td>
 
                             <td valign="top">
-                                <select name="unidad[]" class="form-control form-control-sm">
+                                <select name="unidadReg[]" class="form-control form-control-sm">
                                     <option value=""></option>
                                     <?php foreach($data as $unidad){
                                              $selUn = $unidad['pkunidad'] == $res['fkunidad'] ? 'selected': '';
@@ -361,10 +361,10 @@ $oSubcot = new Subcotizacion();
                                 </select>
                             </td>
 
-                            <td><textarea id="descripcion-<?php echo $contador; ?>" name="descripcion[]" class="form-control cajas-texto scrollHidden" autocomplete="off" style="resize:none;height:auto;"  onclick="menu(this); return false;" data-servicio='servicios?row=<?php echo $contador; ?>' oninput="autoResize(this);" spellcheck="false" onfocus="mostrarScroll('descripcion-<?php echo $contador; ?>')" onblur="ocultarScroll('descripcion-<?php echo $contador; ?>')"><?php echo $res['descripcion']; ?></textarea></td>
+                            <td><textarea id="descripcion-<?php echo $contador; ?>" name="descripcionReg[]" class="form-control cajas-texto scrollHidden" autocomplete="off" style="resize:none;height:auto;"  onclick="menu(this); return false;" data-servicio='servicios?row=<?php echo $contador; ?>' oninput="autoResize(this);" spellcheck="false" onfocus="mostrarScroll('descripcion-<?php echo $contador; ?>')" onblur="ocultarScroll('descripcion-<?php echo $contador; ?>')"><?php echo $res['descripcion']; ?></textarea></td>
 
                             <td valign="top" >
-                                <select name="ttrabajo[]" class="form-control form-control-sm" style="text-align: justify;white-space:wrap;padding:0px;">
+                                <select name="ttrabajoReg[]" class="form-control form-control-sm" style="text-align: justify;white-space:wrap;padding:0px;">
                                         <option value=""></option>
                                         <?php   
                                                 foreach ($tipo as $value) {
@@ -377,13 +377,13 @@ $oSubcot = new Subcotizacion();
                                 </select>
                             </td>
 
-                            <td valign="top"><input type="text" id="costo-<?php echo $contador; ?>" onchange="moneda(this);"  onblur="Subtotal(this); totales(); CalculaContenido();"  name="costo[]"  class="form-control form-control-sm <?php echo $viewCosto; ?>" autocomplete="off" data-pre="costo" value="$<?php  echo number_format($res["preciounit"], 2, '.', ','); ?>"></td>
+                            <td valign="top"><input type="text" id="costo-<?php echo $contador; ?>" onchange="moneda(this);"  onblur="Subtotal(this); totales(); CalculaContenido();"  name="costoReg[]"  class="form-control form-control-sm <?php echo $viewCosto; ?>" autocomplete="off" data-pre="costo" value="$<?php  echo number_format($res["preciounit"], 2, '.', ','); ?>"></td>
 
-                            <td valign="top"><input readonly name="subtotal[]" type="text" id="subtotal-<?php echo $contador;?>" class="form-control form-control-sm subtotal <?php echo $viewCosto; ?>" autocomplete="off" data-pre="subtotal" value="$<?php  echo number_format($res["subtotal"], 2, '.', ','); ?>"></td>
+                            <td valign="top"><input readonly name="subtotalReg[]" type="text" id="subtotal-<?php echo $contador;?>" class="form-control form-control-sm subtotal <?php echo $viewCosto; ?>" autocomplete="off" data-pre="subtotal" value="$<?php  echo number_format($res["subtotal"], 2, '.', ','); ?>"></td>
 
-                            <td valign="top"><textarea id="" name="clave[]" class="form-control" autocomplete="off" style="resize:none;height:30px;" oninput="autoResize(this);" spellcheck="false"><?php echo $res["clave"]; ?></textarea></td>
+                            <td valign="top"><textarea id="" name="claveReg[]" class="form-control" autocomplete="off" style="resize:none;height:30px;" oninput="autoResize(this);" spellcheck="false"><?php echo $res["clave"]; ?></textarea></td>
 
-                            <td valign="top"><input id="item-<?php echo $contador; ?>"  name="item[]" type="text"  class="form-control form-control-sm" autocomplete="off" value=" <?php echo $res["item"]; ?>"></td>
+                            <td valign="top"><input id="item-<?php echo $contador; ?>"  name="itemReg[]" type="text"  class="form-control form-control-sm" autocomplete="off" value=" <?php echo $res["item"]; ?>"></td>
                         </tr>
                               <?php $contador++;  } //Fin de Foreach
 

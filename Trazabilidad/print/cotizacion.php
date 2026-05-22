@@ -559,8 +559,8 @@ if(!empty($resultado)){
                     VALIDÓ<br><br><br><br><br>
 
                     _____________________________________<br>
-                    <strong>HENRRY HERNANDEZ PEREZ</strong><br>
-                    GERENTE GENERAL
+                    <strong>FRANCISCO JAVIER CRUZ HERNANDEZ</strong><br>
+                    GERENTE OPERATIVO
                 </td>
                 
             </tr>

@@ -174,18 +174,31 @@ $datos = array(
         $dataServReg = array(); //Se crea el array
         if(isset($_POST["pkservcotizacion"])){ 
             for($i = 0 ; $i < count($_POST["pkservcotizacion"]); $i++){
+                $pkservcot = (int) base64_decode($_POST["pkservcotizacion"][$i]);
+                $descripcion = trim($_POST['descripcionReg'][$i] ?? '');
+                $cantidad = Helper::float($_POST['cantReg'][$i] ?? 0);
+                $costo = Helper::float($_POST['costoReg'][$i] ?? 0);
+                $subtotal = Helper::float($_POST['subtotalReg'][$i] ?? 0);
+                $clave = trim(Helper::val_input($_POST['claveReg'][$i] ?? ''));
+                $item = trim(Helper::val_input($_POST["itemReg"][$i] ?? ''));
+
+                if($descripcion === '' && $cantidad == 0 && $costo == 0 && $subtotal == 0 && $clave === '' && $item === ''){
+                    $oCot->DeleteServ($pkservcot);
+                    continue;
+                }
+
                 $dataServReg = array(
                     "pda" => Helper::float($_POST['pdaReg'][$i]),
-                    "cantidad" => Helper::float($_POST['cantReg'][$i]),
+                    "cantidad" => $cantidad,
                     "unidad" => Helper::val_input($_POST['unidadReg'][$i]),
-                    "descripcion" =>trim($_POST['descripcionReg'][$i]),
+                    "descripcion" => $descripcion,
                     "ttrabajo" => Helper::val_input($_POST['ttrabajoReg'][$i]),
-                    "costo" => Helper::float($_POST['costoReg'][$i]),
-                    "subtotal" => Helper::float($_POST['subtotalReg'][$i]),
-                    "clave" => Helper::val_input($_POST['claveReg'][$i]),
-                    "item" => Helper::val_input($_POST["itemReg"][$i]),
+                    "costo" => $costo,
+                    "subtotal" => $subtotal,
+                    "clave" => $clave,
+                    "item" => $item,
                     "contenido" => Helper::val_input($_POST["contenidoReg"][$i]),
-                    "pkservcotizacion" => (int) base64_decode($_POST["pkservcotizacion"][$i]),
+                    "pkservcotizacion" => $pkservcot,
                 );
             
                 $oCot->updateServ($dataServReg);

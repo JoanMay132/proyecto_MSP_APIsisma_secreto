@@ -378,12 +378,30 @@
 
         }
 
+        private function isServicioVacio(array $serv): bool {
+            $descripcion = trim((string)($serv['descripcion'] ?? ''));
+            $cant = (float)($serv['cant'] ?? 0);
+            $precio = (float)($serv['preciounit'] ?? 0);
+            $subtotal = (float)($serv['subtotal'] ?? 0);
+            $clave = trim((string)($serv['clave'] ?? ''));
+            $item = trim((string)($serv['item'] ?? ''));
+
+            return $descripcion === ''
+                && $cant == 0
+                && $precio == 0
+                && $subtotal == 0
+                && $clave === ''
+                && $item === '';
+        }
+
         public function GetDataAllServ($revicion){
            
             $query = self::$conexion->prepare('SELECT * FROM servcotizacion WHERE fkcotizacion = ? ORDER BY pda');
             $query->execute(array($revicion));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
-            return $query;
+            return array_values(array_filter($query, function($serv) {
+                return !$this->isServicioVacio($serv);
+            }));
         }
 
         //Función para imprimir los datos de entrega
@@ -438,7 +456,9 @@
             ');
             $query->execute(array($orden));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
-            return $query;
+            return array_values(array_filter($query, function($serv) {
+                return !$this->isServicioVacio($serv);
+            }));
         }
 
         public function Concepto($sucursal,$anio){
