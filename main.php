@@ -13,7 +13,7 @@ include './dependencias/php/menu.php';
     padding:0px;
   }
   .main-wrapper{
-    background-image:url('dependencias/img/msp_wallpapers2.webp');
+    background-image:url('dependencias/img/msp_wallpapers2.webp?v=2');
     background-size:cover;
     background-repeat: no-repeat;
     background-position: center;
