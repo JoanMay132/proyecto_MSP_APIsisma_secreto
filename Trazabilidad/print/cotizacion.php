@@ -15,14 +15,21 @@ require_once("../../dependencias/dompdf/autoload.inc.php");
  $nControl = 6;
 
 $resp = $oCot->Print($id);
+$firmaEmpleado = strtoupper(trim($resp['nombre_empleado'].' '.$resp['apellidos']));
+$lineasFirmaDigital = Helper::lineasFirmaDigitalFormato($firmaEmpleado);
+$anchoLineaFirma = (int) min(320, max(230, (strlen($firmaEmpleado) * 7.8) + 36));
+$anchoLogoFirma = 115;
+$anchoTextoFirma = 300;
+$separacionFirma = 6;
+$solapamientoFirma = 0;
+$anchoContenidoFirma = $anchoLogoFirma + $anchoTextoFirma + $separacionFirma - $solapamientoFirma;
+$offsetFirmaBloque = 315;
+$desplazamientoFirma = (int) min(130, max(70, round(($anchoContenidoFirma - $anchoLineaFirma) * 0.82)));
 
 $importe = 0;
 $dolar = isset($_GET['moneda']) && @$_GET['moneda'] === 'true' ?true : false;
-//Codigo para encriptación de imagen y poder renderizar en dompdf
-$path = '../../dependencias/img/Logo_Premium_Maquinados-04.svg';
-$type = pathinfo($path, PATHINFO_EXTENSION);
-$data = file_get_contents($path);
-$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+// Logo en PNG base64 para DomPDF (SVG y PNG derivado se ven en blanco en PDF)
+$logoSrc = Helper::logoSrcForPdf();
 
 if (isset($_GET['iva']) && $_GET['iva'] === 'true') { $iva = true; } else { $iva = false;}
 
@@ -217,6 +224,61 @@ if(!empty($resultado)){
             text-align: left;
             color: black;
         }
+        table.signature-wrap {
+            width: 100% !important;
+        }
+        table.signature-wrap td {
+            border: none;
+        }
+        table.signature-content {
+            width: 423px !important;
+        }
+        table.signature-content td {
+            border: none;
+        }
+        table.signature-stack {
+            width: auto !important;
+        }
+        table.signature-stack td {
+            border: none;
+        }
+        table.signature-content-inner {
+            width: auto !important;
+            margin: 0 auto;
+        }
+        table.signature-content-inner td {
+            border: none;
+        }
+        table.signature-stack td.signature-logo,
+        table.signature-content-inner td.signature-logo {
+            vertical-align: bottom;
+            padding: 0 6px 6px 0;
+            line-height: 0;
+            width: auto;
+        }
+        table.signature-stack td.signature-text-cell,
+        table.signature-content-inner td.signature-text-cell {
+            vertical-align: bottom;
+            padding: 0 0 6px 0;
+            margin-left: 0;
+        }
+        table.signature-stack img.signature-logo-img {
+            display: block;
+        }
+        table.signature-text {
+            width: 300px !important;
+        }
+        table.signature-text td {
+            text-align: left !important;
+        }
+        table.signature-text td p,
+        table.signature-stack td.signature-text-cell p {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            line-height: 1.3;
+            font-size: 6.5pt;
+        }
 
     </style>
 </head>
@@ -235,7 +297,7 @@ if(!empty($resultado)){
                     </center>
                 </td>
                 <td style="width:20%">
-                    <img src="<?php echo $base64; ?>" style="width:145px;height:80px;position:relative;top:-5px">
+                    <img src="<?php echo $logoSrc; ?>" style="width:145px;height:80px;position:relative;top:-5px">
                 </td>
             </tr>
             <tr>
@@ -540,29 +602,54 @@ if(!empty($resultado)){
                 </td>
             </tr> -->
             <tr>
-                <th  colspan="2" style="font-size: 8pt;text-align:left;color:#002060;padding-bottom:30px">
+                <th colspan="2" style="font-size: 8pt;text-align:left;color:#002060;padding-bottom:30px">
                     <?php if(!$iva){ ?> Estos precios no incluyen I.V.A.<br> <?php } ?>
                     Desviaciones / Excepciones / Requisitos No contempladas por el cliente<br>
                     Para proceder con esta cotización deberá ser autorizado por escrito mediante orden de compra o pedido.<br>
                 </th>
             </tr>
+        </table>
+        <table class="signature-wrap" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;">
             <tr>
-                <td style="font-size:11px;text-align:center;width:50%">
-                    ELABORÓ<br><br><br><br><br>
-
-                    _____________________________________<br>
-                    <strong><?php echo $resp['nombre_empleado'].' '.$resp['apellidos']; ?></strong><br>
-                    JEFE DE VENTAS
+                <td width="<?php echo $offsetFirmaBloque; ?>" style="width:<?php echo $offsetFirmaBloque; ?>px;font-size:1px;line-height:1px;">&nbsp;</td>
+                <td align="left" style="font-size:11px;vertical-align:top;">
+                    <table class="signature-stack" width="<?php echo $anchoContenidoFirma; ?>" align="center" cellpadding="0" cellspacing="0" style="width:<?php echo $anchoContenidoFirma; ?>px;">
+                        <tr>
+                            <td align="center" style="padding-bottom:8px;text-align:center;">
+                                ELABORÓ<br><br><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" style="padding:0 0 0 <?php echo $desplazamientoFirma; ?>px;line-height:0;">
+                                <table class="signature-content-inner" align="left" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td class="signature-logo" valign="bottom">
+                                            <img class="signature-logo-img" src="<?php echo $logoSrc; ?>" width="<?php echo $anchoLogoFirma; ?>" height="72">
+                                        </td>
+                                        <td class="signature-text-cell" valign="bottom" width="<?php echo $anchoTextoFirma; ?>" style="text-align:left;width:<?php echo $anchoTextoFirma; ?>px;">
+                                            <?php echo Helper::htmlFirmaDigital($lineasFirmaDigital); ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding:0;line-height:0;">
+                                <table width="<?php echo $anchoLineaFirma; ?>" align="center" cellpadding="0" cellspacing="0" style="width:<?php echo $anchoLineaFirma; ?>px;">
+                                    <tr>
+                                        <td style="border-top:1px solid black;font-size:1px;line-height:1px;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding-top:4px;text-align:center;">
+                                <strong><?php echo $firmaEmpleado; ?></strong><br>
+                                JEFE DE VENTAS
+                            </td>
+                        </tr>
+                    </table>
                 </td>
-                
-                <td style="font-size:11px;text-align:center;width:50%">
-                    VALIDÓ<br><br><br><br><br>
-
-                    _____________________________________<br>
-                    <strong>FRANCISCO JAVIER CRUZ HERNANDEZ</strong><br>
-                    GERENTE OPERATIVO
-                </td>
-                
             </tr>
         </table>
     </main>
@@ -581,10 +668,7 @@ $html = ob_get_clean();
 use Dompdf\Dompdf;
 
 $dompdf = new Dompdf();
-$options = $dompdf->getOptions();
-$options->set('isHtml5ParserEnabled', true);
-$options->set(array('isRemoteEnabled' => true));
-$dompdf->setOptions($options);
+Helper::configureDompdf($dompdf);
 
 
 //se carga el contenido

@@ -101,7 +101,7 @@ if(isset($_COOKIE['sesion_usuario_mspapi'])){
             <div class="login-container">
                 <div class="login-header">
                     <!-- Imagen de ejemplo -->
-                    <img src="dependencias/img/Logo_Premium_Maquinados-04.svg?v=1.0" style="width: 15rem;" alt="Logo Empresa" class="img-fluid mb-3 img-responsive">
+                    <img src="dependencias/img/Logo_Premium_Maquinados-04.svg?v=1.1" style="width: 15rem;" alt="Logo Empresa" class="img-fluid mb-3 img-responsive">
                     <h5>Inicio de sesión</h5>
                    
                 </div>

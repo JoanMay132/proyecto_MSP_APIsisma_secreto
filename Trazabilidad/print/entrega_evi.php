@@ -4,6 +4,7 @@ include_once("../../controlador/conexion.php");
 include_once("../../controlador/Entrega.php");
 include_once("../../class/Fecha.php");
 include_once("../../class/Header.php");
+include_once("../../class/Helper.php");
 require_once("../../dependencias/dompdf/autoload.inc.php");
 
 $idEntrega = (int) base64_decode($_GET['entrega']);
@@ -15,11 +16,7 @@ $nControl = 8; //Numero de control
 
 $resp = $oEntrega->Print($idEntrega);
 
-//Codigo para encriptación de imagen y poder renderizar en dompdf
-$path = '../../dependencias/img/Logo_Premium_Maquinados-04.svg';
-$type = pathinfo($path, PATHINFO_EXTENSION);
-$data = file_get_contents($path);
-$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+$logoSrc = Helper::logoSrcForPdf();
 
 if(!empty($resp['evidencia'])){
     $path2 = $resp['evidencia'];
@@ -207,7 +204,7 @@ if(!empty($resultado)){
                     </center>
                 </td>
                 <td style="width:20%">
-                    <img src="<?php echo $base64; ?>" style="width:145px;height:80px;position:relative;top:-5px">
+                    <img src="<?php echo $logoSrc; ?>" style="width:145px;height:80px;position:relative;top:-5px">
                 </td>
             </tr>
             <tr>
@@ -334,10 +331,7 @@ $html = ob_get_clean();
 use Dompdf\Dompdf;
 
 $dompdf = new Dompdf();
-$options = $dompdf->getOptions();
-$options->set('isHtml5ParserEnabled', true);
-$options->set(array('isRemoteEnabled' => true));
-$dompdf->setOptions($options);
+Helper::configureDompdf($dompdf);
 
 //se carga el contenido
 $dompdf->loadHtml($html);
