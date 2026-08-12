@@ -98,7 +98,7 @@ async function Sucursal(valor){
     //Se actuliza la lista de empleado por sucursal
     await $.ajax({
         type: "POST",
-        data: {"sucursal": valor},
+        data: {"sucursal": valor, "soloActivos": "1"},
         url: "../Trazabilidad/Cargas/loadEmpleados.php",
         dataType: "json",
         success:function(respuesta){

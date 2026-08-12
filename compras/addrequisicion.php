@@ -245,7 +245,7 @@ $popper = true;
 <?php
   include_once '../dependencias/php/footer.php';
 ?>
-<script type="text/javascript" src="../dependencias/js/Compras/Requisicion.js"></script>
+<script type="text/javascript" src="../dependencias/js/Compras/Requisicion.js?v=1.0.1"></script>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
