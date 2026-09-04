@@ -12,6 +12,8 @@
   $idSuc =(int) base64_decode($_GET['suc']??null);
   if(!filter_var($idSuc,FILTER_VALIDATE_INT)){ echo "LA URL NO ES VALIDA :("; return false;}
   $anio = isset($_GET['anio']) ? $_GET['anio'] :  date("Y");
+  $de = isset($_GET['de']) && $_GET['de'] != '' ? $_GET['de'] : $anio."-01-01";
+  $a = isset($_GET['a']) && $_GET['a'] != '' ? $_GET['a'] : ($anio == date("Y") ? date("Y-m-d") : $anio."-12-31");
 
 #region Permsisos
   if(!$rol->getPermissionControl($_SESSION['controles'],$nameControl,$idSuc)){
@@ -72,17 +74,26 @@
             </div>
             <div class="form-group col-12 col-sm-1 text-center" style="margin-top:-10px">
                 <label class="txt-12 text-secondary">Año</label>
-                <select class="form-control text-center form-text" id="anio" onchange="return selecciona();" style="width:60px">
-                  <?php
+                <select class="form-control text-center form-text" id="anio" onchange="selecciona();">
+                <?php
                    for($i = date("Y"); $i >= ($anio-30); $i-- ){
                     $selAnio = $anio == $i ?"selected":"";
                       echo "<option ".$selAnio." value=".$i.">".$i."</option>";
                    }
                    ?>
                 </select>
-              
+            </div>
+            <div class="form-group col-12 col-sm-2 text-center" style="margin-top:-10px">
+                <label class="txt-12 text-secondary">De</label>
+                <input type="date" class="form-control form-control-sm text-center form-text" id="de" value="<?php echo $de; ?>" max="<?php echo date('Y-m-d'); ?>" onchange="marcaFechaEditada();return selecciona();">
+            </div>
+            <div class="form-group col-12 col-sm-2 text-center" style="margin-top:-10px">
+                <label class="txt-12 text-secondary">A</label>
+                <input type="date" class="form-control form-control-sm text-center form-text" id="a" value="<?php echo $a; ?>" max="<?php echo date('Y-m-d'); ?>" onchange="marcaFechaEditada();return selecciona();">
             </div>
             <div class="form-group col-12 col-sm-1">
+                <a href="javascript:imprimirGeneral();" style="border-radius:0px;margin-top:5px" class="btn btn-info btn-sm" title="Generar PDF de todas las revisiones en el rango"><i class="fa fa-file-pdf-o fa-lg"></i>PDF</a>
+                <a href="javascript:exportarExcel();" style="border-radius:0px;margin-top:5px" class="btn btn-success btn-sm" title="Descargar Excel de todas las revisiones en el rango"><i class="fa fa-file-excel-o fa-lg"></i>Excel</a>
               <?php if($modifica){ ?>
                 <a href="javascript:ventana1('addrevpreeliminar')" style="border-radius:0px;margin-top:5px" class="btn btn-primary btn-sm"><i class="fa fa-plus fa-lg"></i>Nuevo</a>
                 <?php } ?>
@@ -101,7 +112,7 @@
                           </tr>
                         </thead>
                         <tbody class="body-table" id="revision">
-                          <?php foreach($oRev->GetDataJoin($idSuc,$anio) as $result){ ?>
+                          <?php foreach($oRev->GetDataJoin($idSuc,$de,$a) as $result){ ?>
                           <tr style="font-weight:500" onclick="return sel(this);" ondblclick="javascript:ventana1('editrevpreeliminar?edit=<?php echo base64_encode($result['pkrevpreeliminar']); ?>')" >
                             <td style="border-right:1px solid #DFDFDF" id="f-revision"><p id="folio" style="margin-left:3px;padding:3px"><?php echo $result["folio"]; ?></p></td>
                             <td style="border-right:1px solid #DFDFDF"><p style="margin-left:3px"><?php if($result["fecha"] != '0000-00-00') echo Fecha::convertir($result["fecha"]); ?></p></td>
@@ -156,10 +167,44 @@
   
 // });
 
+var fechaEditada = false;
+function marcaFechaEditada(){
+  fechaEditada = true;
+}
+
 function selecciona(){
   let suc =  document.getElementById('sucursalView').value;
   let anio = document.getElementById('anio').value;
-    location.href = "revpreeliminar?suc="+suc+"&anio="+anio;
+
+  let URL = "revpreeliminar?suc="+suc+"&anio="+anio;
+
+  if(fechaEditada){
+    let de = document.getElementById('de').value;
+    let a = document.getElementById('a').value;
+    URL += "&de="+de+"&a="+a;
+  }
+
+    location.href = URL;
+}
+
+function imprimirGeneral(){
+  let suc = document.getElementById('sucursalView').value;
+  let de = document.getElementById('de').value;
+  let a = document.getElementById('a').value;
+
+  let izquierda = Math.round((screen.width - 900) / 2);
+  let arriba = Math.round((screen.height - 1000) / 2);
+
+  let URL = "print/revisionGeneral?suc="+suc+"&de="+de+"&a="+a;
+  window["print_revision_general"] ? window["print_revision_general"].focus() : window.open(URL, "print_revision_general", "width=900,height=1000,scrollbars=yes,left="+izquierda+",top="+arriba+",addressbar=0,menubar=0,toolbar=0");
+}
+
+function exportarExcel(){
+  let suc = document.getElementById('sucursalView').value;
+  let de = document.getElementById('de').value;
+  let a = document.getElementById('a').value;
+
+  location.href = "print/revisionExcel?suc="+suc+"&de="+de+"&a="+a;
 }
 
 var anterior = null;

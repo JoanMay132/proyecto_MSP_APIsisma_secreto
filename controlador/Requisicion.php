@@ -13,9 +13,35 @@ class Requisicion extends Conexion{
     }
 
     public function AddFolio($folio,$sucursal,$fecha): bool{
-        $query = self::$conexion->prepare('INSERT INTO requisicion (folio,fksucursal,fecha) VALUES (?,?,?) ');
+        $query = self::$conexion->prepare('INSERT INTO requisicion (
+            fkorden,
+            folio,
+            proyecto,
+            fecha,
+            estado,
+            clasificacion,
+            observaciones,
+            fkesolicita,
+            fkerecibe,
+            fkeautoriza,
+            lugarent,
+            fksucursal
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ');
 
-        if($query->execute(array($folio,$sucursal,$fecha)) > 0){
+        if($query->execute(array(
+            0,
+            $folio,
+            '',
+            $fecha,
+            'En proceso',
+            '',
+            '',
+            0,
+            0,
+            0,
+            '',
+            $sucursal
+        )) > 0){
             $this->pkrequisicion = self::$conexion->lastInsertId();
            return true;
         }
@@ -80,9 +106,9 @@ class Requisicion extends Conexion{
         return $query;
     }
 
-    public function GetDataJoin($data,$anio){
-           
-        $query = self::$conexion->prepare('SELECT 
+    public function GetDataJoin($data,$de,$a){
+
+        $query = self::$conexion->prepare('SELECT
         requisicion.pkrequisicion,
         requisicion.folio,
         requisicion.fecha,
@@ -90,10 +116,36 @@ class Requisicion extends Conexion{
         requisicion.fkesolicita,
         requisicion.estado,
         empleado.pkempleado,
-        empleado.nombre AS nempleado, 
+        empleado.nombre AS nempleado,
         empleado.apellidos FROM requisicion
-    LEFT JOIN empleado ON requisicion.fkesolicita = empleado.pkempleado WHERE requisicion.fksucursal = ? AND YEAR(requisicion.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(folio, "/", 1), "A", -1) AS UNSIGNED) DESC,folio DESC');
-        $query->execute(array($data,$anio));
+    LEFT JOIN empleado ON requisicion.fkesolicita = empleado.pkempleado WHERE requisicion.fksucursal = ? AND requisicion.fecha BETWEEN ? AND ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(folio, "/", 1), "A", -1) AS UNSIGNED) DESC,folio DESC');
+        $query->execute(array($data,$de,$a));
+        $query = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $query;
+    }
+
+    //Join de requisicion con su documentacion relacionada (OT, cotizacion, revision origen, orden de compra)
+    public function GetDataJoinFull($data,$de,$a){
+
+        $query = self::$conexion->prepare('SELECT
+            requisicion.pkrequisicion,
+            requisicion.folio,
+            requisicion.fecha,
+            requisicion.proyecto,
+            requisicion.estado,
+            orden.folio AS otfolio,
+            cotizacion.folio AS cotfolio,
+            revpreeliminar.folio AS revfolio,
+            GROUP_CONCAT(DISTINCT ordcompra.folio SEPARATOR ", ") AS ordcompfolio
+        FROM requisicion
+        LEFT JOIN orden ON requisicion.fkorden = orden.pkorden
+        LEFT JOIN cotizacion ON orden.fkcotizacion = cotizacion.pkcotizacion
+        LEFT JOIN revpreeliminar ON cotizacion.fkrevpreeliminar = revpreeliminar.pkrevpreeliminar
+        LEFT JOIN ocompra AS ordcompra ON ordcompra.fkrequisicion = requisicion.pkrequisicion
+        WHERE requisicion.fksucursal = ? AND requisicion.fecha BETWEEN ? AND ?
+        GROUP BY requisicion.pkrequisicion
+        ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(requisicion.folio, "/", 1), "A", -1) AS UNSIGNED) DESC, requisicion.folio DESC');
+        $query->execute(array($data,$de,$a));
         $query = $query->fetchAll(PDO::FETCH_ASSOC);
         return $query;
     }

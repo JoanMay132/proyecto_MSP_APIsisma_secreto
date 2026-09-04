@@ -105,9 +105,9 @@
         }
 
         //Join entrega para la lista de entregas
-        public function GetDataJoin($data,$anio){
-           
-            $query = self::$conexion->prepare('SELECT 
+        public function GetDataJoin($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT
             entrega.pkentrega,
             entrega.fecha,
             entrega.fkcliente,
@@ -117,14 +117,39 @@
             cliente.pkcliente,
             cliente.nombre AS ncliente,
             empleado.pkempleado,
-            empleado.nombre AS nempleado, 
-            empleado.apellidos, 
+            empleado.nombre AS nempleado,
+            empleado.apellidos,
             cotizacion.folio AS folioCot FROM entrega
         LEFT JOIN orden ON entrega.fkorden = orden.pkorden
         LEFT JOIN cliente ON entrega.fkcliente = cliente.pkcliente
         LEFT JOIN cotizacion ON entrega.fkcotizacion = cotizacion.pkcotizacion
-        LEFT JOIN empleado ON entrega.fkentrego = empleado.pkempleado WHERE entrega.fksucursal = ? AND YEAR(entrega.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "A", -1) AS UNSIGNED) DESC,orden.folio DESC');
-            $query->execute(array($data,$anio));
+        LEFT JOIN empleado ON entrega.fkentrego = empleado.pkempleado WHERE entrega.fksucursal = ? AND entrega.fecha BETWEEN ? AND ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "A", -1) AS UNSIGNED) DESC,orden.folio DESC');
+            $query->execute(array($data,$de,$a));
+            $query = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $query;
+        }
+
+        //Join de entrega con su documentacion relacionada (OT, cotizacion, revision origen)
+        public function GetDataJoinFull($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT
+                entrega.pkentrega,
+                entrega.fecha,
+                entrega.depto,
+                cliente.nombre AS ncliente,
+                orden.folio AS otfolio,
+                cotizacion.folio AS cotfolio,
+                cotizacion.estado,
+                cotizacion.factura,
+                revpreeliminar.folio AS revfolio
+            FROM entrega
+            LEFT JOIN orden ON entrega.fkorden = orden.pkorden
+            LEFT JOIN cliente ON entrega.fkcliente = cliente.pkcliente
+            LEFT JOIN cotizacion ON entrega.fkcotizacion = cotizacion.pkcotizacion
+            LEFT JOIN revpreeliminar ON cotizacion.fkrevpreeliminar = revpreeliminar.pkrevpreeliminar
+            WHERE entrega.fksucursal = ? AND entrega.fecha BETWEEN ? AND ?
+            ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "A", -1) AS UNSIGNED) DESC, orden.folio DESC');
+            $query->execute(array($data,$de,$a));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
         }

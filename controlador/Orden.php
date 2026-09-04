@@ -164,9 +164,9 @@
         }
 
         //Join cotizacion para la lista de cotizaciones
-        public function GetDataJoin($data,$anio){
-           
-            $query = self::$conexion->prepare('SELECT 
+        public function GetDataJoin($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT
             orden.pkorden,
             orden.folio,
             orden.fecha,
@@ -175,14 +175,43 @@
             cliente.pkcliente,
             cliente.nombre AS ncliente,
             empleado.pkempleado,
-            empleado.nombre AS nempleado, 
+            empleado.nombre AS nempleado,
             empleado.apellidos,
-            cotizacion.ocompra, 
+            cotizacion.ocompra,
             cotizacion.folio AS folioCot FROM orden
         LEFT JOIN cotizacion ON orden.fkcotizacion = cotizacion.pkcotizacion
-        LEFT JOIN cliente ON orden.fkcliente = cliente.pkcliente 
-        LEFT JOIN empleado ON orden.fkeproduccion = empleado.pkempleado WHERE orden.fksucursal = ? AND YEAR(orden.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "C", -1) AS UNSIGNED) DESC,folio DESC');
-            $query->execute(array($data,$anio));
+        LEFT JOIN cliente ON orden.fkcliente = cliente.pkcliente
+        LEFT JOIN empleado ON orden.fkeproduccion = empleado.pkempleado WHERE orden.fksucursal = ? AND orden.fecha BETWEEN ? AND ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "C", -1) AS UNSIGNED) DESC,folio DESC');
+            $query->execute(array($data,$de,$a));
+            $query = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $query;
+        }
+
+        //Join de orden con su documentacion relacionada (cotizacion padre, revision origen, orden de compra, entrega)
+        public function GetDataJoinFull($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT
+                orden.pkorden,
+                orden.folio,
+                orden.fecha,
+                orden.depto,
+                cliente.nombre AS ncliente,
+                cotizacion.folio AS cotfolio,
+                cotizacion.estado,
+                cotizacion.factura,
+                revpreeliminar.folio AS revfolio,
+                GROUP_CONCAT(DISTINCT ordcompra.folio SEPARATOR ", ") AS ordcompfolio,
+                COUNT(DISTINCT entrega.pkentrega) AS totalentregas
+            FROM orden
+            LEFT JOIN cliente ON orden.fkcliente = cliente.pkcliente
+            LEFT JOIN cotizacion ON orden.fkcotizacion = cotizacion.pkcotizacion
+            LEFT JOIN revpreeliminar ON cotizacion.fkrevpreeliminar = revpreeliminar.pkrevpreeliminar
+            LEFT JOIN ocompra AS ordcompra ON ordcompra.fkorden = orden.pkorden
+            LEFT JOIN entrega ON entrega.fkorden = orden.pkorden
+            WHERE orden.fksucursal = ? AND orden.fecha BETWEEN ? AND ?
+            GROUP BY orden.pkorden
+            ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(orden.folio, "/", 1), "C", -1) AS UNSIGNED) DESC, orden.folio DESC');
+            $query->execute(array($data,$de,$a));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
         }
@@ -295,18 +324,20 @@
             return $query;
         }
 
-        public function Concepto($sucursal,$anio){
-            $query = self::$conexion->prepare('SELECT 
+        public function Concepto($sucursal,$de,$a){
+            $query = self::$conexion->prepare('SELECT
             servorden.descripcion,
             servorden.tipotrabajo,
             orden.fecha,
             orden.folio,
             orden.pkorden,
+            cotizacion.estado,
             cliente.nombre FROM servorden
             LEFT JOIN orden ON servorden.fkorden = orden.pkorden
-            LEFT JOIN cliente ON orden.fkcliente = cliente.pkcliente WHERE orden.fksucursal = ? AND YEAR(orden.fecha) = ? ORDER BY orden.fecha DESC
+            LEFT JOIN cotizacion ON orden.fkcotizacion = cotizacion.pkcotizacion
+            LEFT JOIN cliente ON orden.fkcliente = cliente.pkcliente WHERE orden.fksucursal = ? AND orden.fecha BETWEEN ? AND ? ORDER BY orden.fecha DESC
         ');
-            $query->execute(array($sucursal,$anio));
+            $query->execute(array($sucursal,$de,$a));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
         }

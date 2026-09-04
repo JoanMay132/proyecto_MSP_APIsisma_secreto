@@ -18,6 +18,13 @@ $resp = $oCompra->Print($idOrden);
 
 $logoSrc = Helper::logoSrcForPdf();
 
+//Firmas de la OC: solo quien elaboró (comprador) y quien autoriza este registro en particular.
+$compradorNombre = trim(($resp['comprador_nombre'] ?? '').' '.($resp['comprador_apellidos'] ?? ''));
+$lineasFirmaComprador = $compradorNombre !== '' ? Helper::lineasFirmaChecklist($compradorNombre, (string) ($resp['comprador_correo'] ?? '')) : [];
+
+$autorizaNombre = trim(($resp['autoriza_nombre'] ?? '').' '.($resp['autoriza_apellidos'] ?? ''));
+$lineasFirmaAutoriza = $autorizaNombre !== '' ? Helper::lineasFirmaChecklist($autorizaNombre, (string) ($resp['autoriza_correo'] ?? '')) : [];
+
 //Obtenemos información del array de encabezados
 $index = null;
 $sucursal = $resp['fksucursal'];
@@ -148,6 +155,72 @@ if(!empty($resultado)){
 
         .signature-table .right {
             text-align: center;
+        }
+
+        table.signature-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table.signature-grid td.signature-cell {
+            width: 50%;
+            border: 0.7px solid #BFBFBF;
+            padding: 6px;
+            vertical-align: top;
+        }
+
+        .signature-cell .signature-rol {
+            font-size: 8pt;
+            font-weight: bold;
+            color: #17365D;
+            margin-bottom: 4px;
+        }
+
+        table.signature-content-inner {
+            width: auto !important;
+            border-collapse: collapse;
+        }
+
+        table.signature-content-inner td {
+            border: none;
+        }
+
+        table.signature-content-inner td.signature-logo {
+            vertical-align: bottom;
+            padding: 0 6px 0 0;
+            line-height: 0;
+            width: 60px;
+        }
+
+        table.signature-content-inner td.signature-text-cell {
+            vertical-align: bottom;
+            width: 220px;
+        }
+
+        table.signature-content-inner td.signature-text-cell p {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            line-height: 1.25;
+            font-size: 6pt;
+        }
+
+        .signature-cell .signature-linea {
+            border-top: 1px solid black;
+            font-size: 1px;
+            line-height: 1px;
+            margin-top: 26px;
+        }
+
+        .signature-cell .signature-pendiente {
+            height: 70px;
+        }
+
+        .signature-cell .signature-nombre {
+            text-align: center;
+            font-size: 7.5pt;
+            margin-top: 3px;
         }
 
             /* new */
@@ -323,34 +396,6 @@ if(!empty($resultado)){
         </table>
     </header>
     <footer>
-    <table class="signature-table content-table">
-            <tr>
-                <td class="left">
-                    <strong>ELABORÓ</strong>
-                </td>
-                <td class="right">
-                    <strong>AUTORIZA</strong>
-                </td>
-            </tr>
-            <tr>
-                <td class="left" style="height: 100px;width:50%">
-                    <p style="margin-bottom:-16px">
-                        _______________________________________________________ <br>
-                        <strong><?php echo $resp['comprador_nombre'].' '.$resp['comprador_apellidos']; ?></strong></strong> <br>JEFE DE COMPRAS<span></span>
-                    </p>
-
-                </td>
-                <td class="right" style="width:50%">
-                    <p style="margin-bottom:-30px">
-
-                    _______________________________________________________ <br>
-                       <strong><?php echo $resp['autoriza_nombre'].' '.$resp['autoriza_apellidos']; ?></strong> <br>GERENTE GENERAL<br><span style="font-size:8px; "><?php echo $header[$index]['nota']; ?></span>
-                    </p>
-
-                </td>
-            </tr>
-
-        </table>
         <center style="margin-top:10px"><small style="color:#808080;font-weight:bold;font-size: 7pt;">Calle 8, LT-1-C MZA-III, Fraccionamiento DEIT, R/A Anacleto Canabal 1ª Sección, Villahermosa, Tabasco.  CP 86280 - ventas01@mspetroleros.com - Tel: (993) 337 9968</small></center>
         <div style="border:0.1px solid black;width:100%;margin-bottom:3px;"></div>
         <small style="font-size: 7.5pt">
@@ -431,7 +476,45 @@ if(!empty($resultado)){
                 <td class="observaciones" colspan="2"><?php echo nl2br($resp['observaciones']); ?></td>
             </tr>
         </table>
-        
+
+        <table class="signature-grid">
+            <tr>
+                <td class="signature-cell">
+                    <div class="signature-rol">ELABORÓ</div>
+                    <?php if (!empty($lineasFirmaComprador)): ?>
+                        <table class="signature-content-inner">
+                            <tr>
+                                <td class="signature-logo"><img src="<?php echo $logoSrc; ?>" width="55" height="34"></td>
+                                <td class="signature-text-cell"><?php echo Helper::htmlFirmaDigital($lineasFirmaComprador); ?></td>
+                            </tr>
+                        </table>
+                        <div class="signature-linea">&nbsp;</div>
+                        <div class="signature-nombre"><strong><?php echo htmlspecialchars($compradorNombre, ENT_QUOTES, 'UTF-8'); ?></strong><br>JEFE DE COMPRAS</div>
+                    <?php else: ?>
+                        <div class="signature-pendiente">&nbsp;</div>
+                        <div class="signature-linea">&nbsp;</div>
+                        <div class="signature-nombre"><?php echo htmlspecialchars($compradorNombre, ENT_QUOTES, 'UTF-8'); ?><br>JEFE DE COMPRAS</div>
+                    <?php endif; ?>
+                </td>
+                <td class="signature-cell">
+                    <div class="signature-rol">AUTORIZA</div>
+                    <?php if (!empty($lineasFirmaAutoriza)): ?>
+                        <table class="signature-content-inner">
+                            <tr>
+                                <td class="signature-logo"><img src="<?php echo $logoSrc; ?>" width="55" height="34"></td>
+                                <td class="signature-text-cell"><?php echo Helper::htmlFirmaDigital($lineasFirmaAutoriza); ?></td>
+                            </tr>
+                        </table>
+                        <div class="signature-linea">&nbsp;</div>
+                        <div class="signature-nombre"><strong><?php echo htmlspecialchars($autorizaNombre, ENT_QUOTES, 'UTF-8'); ?></strong><br>GERENTE GENERAL<br><span style="font-size:7px;"><?php echo $header[$index]['nota'] ?></span></div>
+                    <?php else: ?>
+                        <div class="signature-pendiente">&nbsp;</div>
+                        <div class="signature-linea">&nbsp;</div>
+                        <div class="signature-nombre"><?php echo htmlspecialchars($autorizaNombre, ENT_QUOTES, 'UTF-8'); ?><br>GERENTE GENERAL<br><span style="font-size:7px;"><?php echo $header[$index]['nota'] ?></span></div>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
 
     </main>
 

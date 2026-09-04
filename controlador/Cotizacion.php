@@ -299,26 +299,58 @@
         }
 
         //Join cotizacion para la lista de cotizaciones
-        public function GetDataJoin($data,$anio){
-           
-            $query = self::$conexion->prepare('SELECT 
+        public function GetDataJoin($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT
                 cotizacion.pkcotizacion,
                 cotizacion.folio,
                 cotizacion.fecha,
                 cotizacion.fkcliente,
                 cotizacion.fkecotizo,
                 cotizacion.ocompra,
-                cotizacion.factura, 
+                cotizacion.factura,
                 cliente.pkcliente,
                 cliente.nombre AS ncliente,
                 deptocli.nombre AS ndepto,
                 empleado.pkempleado,
-                empleado.nombre AS nempleado, 
+                empleado.nombre AS nempleado,
                 empleado.apellidos FROM cotizacion
             LEFT JOIN cliente ON cotizacion.fkcliente = cliente.pkcliente
-            LEFT JOIN deptocli ON cotizacion.fkdeptocli = deptocli.pkdeptocli 
-            LEFT JOIN empleado ON cotizacion.fkecotizo = empleado.pkempleado WHERE cotizacion.fksucursal = ? AND YEAR(cotizacion.fecha) = ? ORDER BY cotizacion.pkcotizacion DESC');
-            $query->execute(array($data,$anio));
+            LEFT JOIN deptocli ON cotizacion.fkdeptocli = deptocli.pkdeptocli
+            LEFT JOIN empleado ON cotizacion.fkecotizo = empleado.pkempleado WHERE cotizacion.fksucursal = ? AND cotizacion.fecha BETWEEN ? AND ? ORDER BY cotizacion.pkcotizacion DESC');
+            $query->execute(array($data,$de,$a));
+            $query = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $query;
+        }
+
+        //Join de cotizacion con su documentacion relacionada (revision origen, OT, orden de compra, entrega)
+        public function GetDataJoinFull($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT
+                cotizacion.pkcotizacion,
+                cotizacion.folio,
+                cotizacion.fecha,
+                cotizacion.estado,
+                cotizacion.factura,
+                cotizacion.ocompra AS ocompracliente,
+                cotizacion.total,
+                cliente.nombre AS ncliente,
+                deptocli.nombre AS ndepto,
+                revpreeliminar.folio AS revfolio,
+                GROUP_CONCAT(DISTINCT orden.folio SEPARATOR ", ") AS otfolio,
+                GROUP_CONCAT(DISTINCT ordcompra.folio SEPARATOR ", ") AS ordcompfolio,
+                COUNT(DISTINCT entrega.pkentrega) AS totalentregas
+            FROM cotizacion
+            LEFT JOIN cliente ON cotizacion.fkcliente = cliente.pkcliente
+            LEFT JOIN deptocli ON cotizacion.fkdeptocli = deptocli.pkdeptocli
+            LEFT JOIN revpreeliminar ON cotizacion.fkrevpreeliminar = revpreeliminar.pkrevpreeliminar
+            LEFT JOIN orden ON orden.fkcotizacion = cotizacion.pkcotizacion
+            LEFT JOIN ocompra AS ordcompra ON ordcompra.fkorden = orden.pkorden
+            LEFT JOIN entrega ON entrega.fkorden = orden.pkorden
+            WHERE cotizacion.fksucursal = ? AND cotizacion.fecha BETWEEN ? AND ?
+            GROUP BY cotizacion.pkcotizacion
+            ORDER BY cotizacion.pkcotizacion DESC');
+            $query->execute(array($data,$de,$a));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
         }
@@ -461,20 +493,21 @@
             }));
         }
 
-        public function Concepto($sucursal,$anio){
-            $query = self::$conexion->prepare('SELECT 
+        public function Concepto($sucursal,$de,$a){
+            $query = self::$conexion->prepare('SELECT
             servcotizacion.descripcion,
             servcotizacion.tipotrabajo,
             cotizacion.fecha,
             cotizacion.folio,
+            cotizacion.estado,
             deptocli.nombre AS ndepto,
             cotizacion.pkcotizacion,
             cliente.nombre FROM servcotizacion
             LEFT JOIN cotizacion ON servcotizacion.fkcotizacion = cotizacion.pkcotizacion
             LEFT JOIN deptocli ON servcotizacion.fkcotizacion = cotizacion.pkcotizacion AND cotizacion.fkdeptocli = deptocli.pkdeptocli
-            LEFT JOIN cliente ON cotizacion.fkcliente = cliente.pkcliente WHERE cotizacion.fksucursal = ? AND YEAR(cotizacion.fecha) = ? ORDER BY cotizacion.fecha DESC
+            LEFT JOIN cliente ON cotizacion.fkcliente = cliente.pkcliente WHERE cotizacion.fksucursal = ? AND cotizacion.fecha BETWEEN ? AND ? ORDER BY cotizacion.fecha DESC
         ');
-            $query->execute(array($sucursal,$anio));
+            $query->execute(array($sucursal,$de,$a));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
         }
