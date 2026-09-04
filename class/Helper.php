@@ -163,6 +163,21 @@ class Helper{
         return $lineas;
     }
 
+    public static function lineasFirmaChecklist(string $nombre, string $email, string $motivo = 'Acepto las partes especificadas de este documento'): array {
+        $nombre = trim(strtoupper($nombre));
+        if ($nombre === '') {
+            return [];
+        }
+
+        return [
+            'Firmado digitalmente por ' . $nombre,
+            'DN: cn=' . $nombre . ' gn=' . $nombre . ' c=MX Mexico l=MX Mexico',
+            'o=MSP MAQUINADOS Y SERVICIOS PETROLEROS ou=MSP MAQUINADOS Y SERVICIOS PETROLEROS',
+            'e=' . $email,
+            'Motivo: ' . $motivo,
+        ];
+    }
+
     public static function htmlFirmaDigital(array $lineas): string {
         $html = '';
         foreach ($lineas as $linea) {

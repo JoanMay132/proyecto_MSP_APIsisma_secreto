@@ -143,13 +143,46 @@
 
         }
 
+        //Join de revision preeliminar con su documentacion relacionada (cotizacion, OT, orden de compra, entrega)
+        public function GetDataJoinFull($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT
+                revpreeliminar.pkrevpreeliminar,
+                revpreeliminar.folio,
+                revpreeliminar.fecha,
+                revpreeliminar.depto,
+                revpreeliminar.proyecto,
+                cliente.nombre AS ncliente,
+                sucursal.nombre AS nsucursal,
+                GROUP_CONCAT(DISTINCT cotizacion.folio SEPARATOR ", ") AS cotfolio,
+                MAX(cotizacion.total) AS importe,
+                GROUP_CONCAT(DISTINCT cotizacion.estado SEPARATOR ", ") AS estado,
+                GROUP_CONCAT(DISTINCT NULLIF(cotizacion.factura,"") SEPARATOR ", ") AS factura,
+                GROUP_CONCAT(DISTINCT orden.folio SEPARATOR ", ") AS otfolio,
+                GROUP_CONCAT(DISTINCT ocompra.folio SEPARATOR ", ") AS ordcompfolio,
+                COUNT(DISTINCT entrega.pkentrega) AS totalentregas
+            FROM revpreeliminar
+            LEFT JOIN cliente ON revpreeliminar.fkcliente = cliente.pkcliente
+            LEFT JOIN sucursal ON revpreeliminar.fksucursal = sucursal.pksucursal
+            LEFT JOIN cotizacion ON cotizacion.fkrevpreeliminar = revpreeliminar.pkrevpreeliminar
+            LEFT JOIN orden ON orden.fkcotizacion = cotizacion.pkcotizacion
+            LEFT JOIN ocompra ON ocompra.fkorden = orden.pkorden
+            LEFT JOIN entrega ON entrega.fkorden = orden.pkorden
+            WHERE revpreeliminar.fksucursal = ? AND revpreeliminar.fecha BETWEEN ? AND ?
+            GROUP BY revpreeliminar.pkrevpreeliminar
+            ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(revpreeliminar.folio, "/", 1), "A", -1) AS UNSIGNED) DESC, revpreeliminar.folio DESC');
+            $query->execute(array($data,$de,$a));
+            $query = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $query;
+        }
+
         //Join revision preeliminar
-        public function GetDataJoin($data,$anio){
-           
-            $query = self::$conexion->prepare('SELECT revpreeliminar.*, cliente.pkcliente,cliente.nombre AS ncliente,empleado.pkempleado,empleado.nombre AS nempleado, empleado.apellidos FROM revpreeliminar 
-            LEFT JOIN cliente ON revpreeliminar.fkcliente = cliente.pkcliente 
-            LEFT JOIN empleado ON revpreeliminar.fkeventas = empleado.pkempleado WHERE revpreeliminar.fksucursal = ? AND YEAR(revpreeliminar.fecha) = ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(folio, "/", 1), "A", -1) AS UNSIGNED) DESC,folio DESC');
-            $query->execute(array($data,$anio));
+        public function GetDataJoin($data,$de,$a){
+
+            $query = self::$conexion->prepare('SELECT revpreeliminar.*, cliente.pkcliente,cliente.nombre AS ncliente,empleado.pkempleado,empleado.nombre AS nempleado, empleado.apellidos FROM revpreeliminar
+            LEFT JOIN cliente ON revpreeliminar.fkcliente = cliente.pkcliente
+            LEFT JOIN empleado ON revpreeliminar.fkeventas = empleado.pkempleado WHERE revpreeliminar.fksucursal = ? AND revpreeliminar.fecha BETWEEN ? AND ? ORDER BY CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(folio, "/", 1), "A", -1) AS UNSIGNED) DESC,folio DESC');
+            $query->execute(array($data,$de,$a));
             $query = $query->fetchAll(PDO::FETCH_ASSOC);
             return $query;
         }

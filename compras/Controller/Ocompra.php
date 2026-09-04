@@ -96,7 +96,7 @@ $datos = array(
     "telefono2" => Helper::val_input($_POST['telefono2']),
     "email" => Helper::val_input($_POST['email']),
     "observaciones" => trim($_POST['observaciones']),
-    "diascredito" => Helper::val_input($_POST['credito']),
+    "diascredito" => trim($_POST['credito'] ?? '') !== '' ? (int) filter_var($_POST['credito'], FILTER_VALIDATE_INT) : 0,
     "fkesolicita" => (int) base64_decode($_POST['solicita'] ?? 0),
     "fkeautoriza" => (int) base64_decode($_POST['autoriza'] ?? 0),
     "estado" => Helper::val_input($_POST['estado']),
