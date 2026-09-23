@@ -31,6 +31,18 @@ if(!empty($resultado)){
     echo "No se encontro el encabezado, consulte con el administrador.";
     return false;
 }
+
+//Firmas electrónicas de la requisición (se colocan al final del documento)
+$firmas = [];
+foreach (['solicita' => 'NOMBRE Y FIRMA', 'recibe' => 'JEFE DE COMPRAS', 'autoriza' => 'GERENTE GENERAL'] as $rolFirma => $puesto) {
+    $nombreFirma = trim(($resp[$rolFirma.'_nombre'] ?? '').' '.($resp[$rolFirma.'_apellidos'] ?? ''));
+    $firmas[] = [
+        'rol' => strtoupper($rolFirma),
+        'nombre' => $nombreFirma,
+        'puesto' => $puesto,
+        'lineas' => $nombreFirma !== '' ? Helper::lineasFirmaChecklist($nombreFirma, (string) ($resp[$rolFirma.'_correo'] ?? '')) : [],
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +57,7 @@ if(!empty($resultado)){
             margin: 20px;
             margin-left: 40px;
             margin-top: 250px;
-            margin-bottom: 220px;
+            margin-bottom: 100px;
         }
 
         header {
@@ -58,7 +70,7 @@ if(!empty($resultado)){
 
         footer {
             position: fixed;
-            bottom: -200px;
+            bottom: -90px;
             left: 0;
             right: 0;
 
@@ -136,6 +148,73 @@ if(!empty($resultado)){
 
         .observaciones {
             height: auto;
+        }
+
+        table.signature-grid {
+            margin-top: 15px;
+            page-break-inside: avoid;
+            table-layout: fixed;
+        }
+
+        table.signature-grid th,
+        table.signature-grid td {
+            border: 0.7px solid #000;
+            padding: 3px;
+        }
+
+        table.signature-grid td.signature-cell {
+            vertical-align: top;
+            text-align: center;
+        }
+
+        table.signature-content-inner {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.signature-grid table.signature-content-inner td {
+            border: none;
+            padding: 0;
+        }
+
+        table.signature-grid table.signature-content-inner td.signature-area {
+            height: 100px;
+            vertical-align: bottom;
+        }
+
+        table.signature-content-inner td.signature-logo {
+            vertical-align: middle;
+            width: 38px;
+            padding-right: 3px;
+        }
+
+        table.signature-content-inner td.signature-text-cell {
+            vertical-align: middle;
+        }
+
+        table.signature-content-inner td.signature-text-cell p {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            line-height: 1.15;
+            font-size: 5pt;
+        }
+
+        .signature-cell .signature-linea {
+            border-top: 1px solid black;
+            font-size: 1px;
+            line-height: 1px;
+            margin: 4px 4px 0 4px;
+        }
+
+        .signature-cell .signature-nombre {
+            font-size: 7.5pt;
+            margin-top: 3px;
+        }
+
+        .signature-cell .signature-nota {
+            font-size: 6pt;
+            line-height: 1.1;
         }
 
         .signature-table .left {
@@ -256,58 +335,6 @@ if(!empty($resultado)){
         </table>
     </header>
     <footer>
-        <table class="signature-table content-table">
-            <tr>
-                <th colspan="4">NOTA IMPORTANTE: En caso de ser necesario, anexar hoja de especificaciones técnicas de las piezas solicitadas.</th>
-            </tr>
-            <tr >
-                <td style="text-align:center;width:10%">
-                    <strong>SOLICITA</strong>
-                </td>
-                <td style="text-align:center;width:10%">
-                    <strong>RECIBE</strong>
-                </td>
-                <td style="text-align:center;width:10%">
-                    <strong>AUTORIZA</strong>
-                </td>
-                <td style="text-align:center;width:25%">
-                    <strong>LUGAR DE ENTREGA</strong>
-                </td>
-            </tr>
-            <tr>
-                <td class="left" style="height: 100px;">
-                    <p style="margin-bottom:-5px">
-                        _____________________________<br>
-                        <strong><?php echo $resp['solicita_nombre'].' '.$resp['solicita_apellidos']; ?></strong> <br>NOMBRE Y FIRMA
-                    </p>
-
-                </td>
-                <td class="right">
-                    <p style="margin-bottom:-5px">
-
-                        _____________________________<br>
-                       <strong><?php echo $resp['recibe_nombre'].' '.$resp['recibe_apellidos']; ?></strong> <br>JEFE DE COMPRAS
-                    </p>
-
-                </td>
-                <td class="right">
-                    <p style="margin-bottom:-28px">
-
-                        _____________________________<br>
-                       <strong><?php echo $resp['autoriza_nombre'].' '.$resp['autoriza_apellidos']; ?></strong> <br>GERENTE GENERAL<br>
-                       <span style="font-size:8px"><?php echo $header[$index]['nota']; ?></span>
-                    </p>
-
-                </td>
-                <td class="right">
-                    <p>
-                        <?php echo $resp['lugarent']; ?>
-                    </p>
-
-                </td>
-            </tr>
-
-        </table><br>
         <center><small style="color:#808080;font-weight:bold;font-size: 7pt;">Calle 8, LT-1-C MZA-III, Fraccionamiento DEIT, R/A Anacleto Canabal 1ª Sección, Villahermosa, Tabasco.  CP 86280 - ventas01@mspetroleros.com - Tel: (993) 337 9968</small></center>
         <div style="border:0.1px solid black;width:100%;margin-bottom:3px;"></div>
         <small style="font-size:10px">
@@ -362,6 +389,43 @@ if(!empty($resultado)){
         </table>
         
 
+        <table class="signature-grid">
+            <tr>
+                <th colspan="4" style="text-align:left">NOTA IMPORTANTE: En caso de ser necesario, anexar hoja de especificaciones técnicas de las piezas solicitadas.</th>
+            </tr>
+            <tr>
+                <?php foreach ($firmas as $firma): ?>
+                <th style="text-align:center;width:24%"><?php echo $firma['rol']; ?></th>
+                <?php endforeach; ?>
+                <th style="text-align:center;width:28%">LUGAR DE ENTREGA</th>
+            </tr>
+            <tr>
+                <?php foreach ($firmas as $firma): ?>
+                <td class="signature-cell">
+                    <table class="signature-content-inner">
+                        <tr>
+                            <td class="signature-area">
+                                <?php if (!empty($firma['lineas'])): ?>
+                                <table class="signature-content-inner">
+                                    <tr>
+                                        <td class="signature-logo"><img src="<?php echo $logoSrc; ?>" width="38" height="24"></td>
+                                        <td class="signature-text-cell"><?php echo Helper::htmlFirmaDigital($firma['lineas']); ?></td>
+                                    </tr>
+                                </table>
+                                <?php else: ?>&nbsp;<?php endif; ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="signature-linea">&nbsp;</div>
+                    <div class="signature-nombre"><strong><?php echo htmlspecialchars($firma['nombre'], ENT_QUOTES, 'UTF-8'); ?></strong><br><?php echo $firma['puesto']; ?></div>
+                    <?php if ($firma['rol'] === 'AUTORIZA'): ?>
+                        <div class="signature-nota"><?php echo $header[$index]['nota']; ?></div>
+                    <?php endif; ?>
+                </td>
+                <?php endforeach; ?>
+                <td style="text-align:center;vertical-align:middle"><?php echo $resp['lugarent']; ?></td>
+            </tr>
+        </table>
     </main>
 
 </body>

@@ -220,10 +220,16 @@ class Requisicion extends Conexion{
         eautoriza.nombre AS autoriza_nombre,
         eautoriza.apellidos AS autoriza_apellidos,
         erecibe.nombre AS recibe_nombre,
-        erecibe.apellidos AS recibe_apellidos FROM requisicion
-        LEFT JOIN empleado AS esolicita ON requisicion.fkesolicita = esolicita.pkempleado 
+        erecibe.apellidos AS recibe_apellidos,
+        usuariosolicita.correo AS solicita_correo,
+        usuarioautoriza.correo AS autoriza_correo,
+        usuariorecibe.correo AS recibe_correo FROM requisicion
+        LEFT JOIN empleado AS esolicita ON requisicion.fkesolicita = esolicita.pkempleado
         LEFT JOIN empleado AS eautoriza ON requisicion.fkeautoriza = eautoriza.pkempleado
-        LEFT JOIN empleado AS erecibe ON requisicion.fkerecibe = erecibe.pkempleado WHERE requisicion.pkrequisicion = ? ');
+        LEFT JOIN empleado AS erecibe ON requisicion.fkerecibe = erecibe.pkempleado
+        LEFT JOIN usuario AS usuariosolicita ON esolicita.fkusuario = usuariosolicita.pkusuario
+        LEFT JOIN usuario AS usuarioautoriza ON eautoriza.fkusuario = usuarioautoriza.pkusuario
+        LEFT JOIN usuario AS usuariorecibe ON erecibe.fkusuario = usuariorecibe.pkusuario WHERE requisicion.pkrequisicion = ? ');
         $query->execute(array($id));
         $query = $query->fetch(PDO::FETCH_ASSOC);
         return $query;

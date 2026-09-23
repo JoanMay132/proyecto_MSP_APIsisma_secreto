@@ -275,7 +275,17 @@ $resCompra=  $oCompra->GetData($idCompra);
                    
                         
                             <label for="observaciones" class="txt-11 text-secondary ">OBSERVACIONES</label>
-                            <textarea class="form-control  col-12 " id="observaciones" name="observaciones" style="margin-top:-10px" rows="4"><?php echo $resCompra['observaciones']; ?></textarea><br>
+                            <textarea class="form-control  col-12 " id="observaciones" name="observaciones" style="margin-top:-10px" rows="4"><?php echo $resCompra['observaciones']; ?></textarea>
+
+                            <div id="imagenes-oc" data-ocompra="<?php echo base64_encode($resCompra['pkocompra']); ?>" style="margin-top:6px">
+                                <label class="txt-11 text-secondary" style="margin-bottom:2px">IMÁGENES (SE INSERTAN EN EL PDF)</label>
+                                <label class="btn btn-secondary btn-sm" style="border-radius:0px;font-size:11px;padding:2px 8px;margin:0 0 0 8px;cursor:pointer">
+                                    <i class="fa fa-camera"></i> Agregar
+                                    <input type="file" id="inputImagenesOc" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                                </label>
+                                <div id="listaImagenesOc" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+                                <small id="notaImagenesOc" class="text-secondary" style="font-size:10px"></small>
+                            </div><br>
                            
                     
             </div>
@@ -363,6 +373,7 @@ $resCompra=  $oCompra->GetData($idCompra);
                                     
 ?>
 <script type="text/javascript" src="../dependencias/js/Compras/Ocompra.js"></script>
+<script type="text/javascript" src="../dependencias/js/Compras/OcompraImagenes.js?v=1.0.0"></script>
 <script>
     $(async function () {
         $('[data-toggle="tooltip"]').tooltip();
