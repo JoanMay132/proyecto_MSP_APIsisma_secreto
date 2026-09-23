@@ -4,6 +4,7 @@ include_once("../../controlador/conexion.php");
 include_once("../../controlador/Ocompra.php");
 include_once("../../class/Fecha.php");
 include_once("../../class/Header.php");
+include_once("../../class/OcompraImagenes.php");
 include_once("../../class/Helper.php");
 require_once("../../dependencias/dompdf/autoload.inc.php");
 
@@ -15,6 +16,11 @@ require_once("../../dependencias/dompdf/autoload.inc.php");
  $nControl = 15; //Numero de control
 
 $resp = $oCompra->Print($idOrden);
+
+//Imágenes de la OC (subidas desde el sistema y/o carpeta de Dropbox)
+$oImagenes = new OcompraImagenes((int) $resp['pkocompra'], (string) $resp['folio']);
+$imagenesOc = $oImagenes->paraPdf();
+$columnasImg = count($imagenesOc) === 1 ? 1 : 2;
 
 $logoSrc = Helper::logoSrcForPdf();
 
@@ -147,6 +153,16 @@ if(!empty($resultado)){
 
         .observaciones {
             height: auto;
+        }
+
+        table.imagenes-oc {
+            margin-top: 10px;
+        }
+
+        table.imagenes-oc td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 4px;
         }
 
         .signature-table .left {
@@ -476,6 +492,19 @@ if(!empty($resultado)){
                 <td class="observaciones" colspan="2"><?php echo nl2br($resp['observaciones']); ?></td>
             </tr>
         </table>
+
+        <?php if (!empty($imagenesOc)): ?>
+        <table class="imagenes-oc">
+            <?php foreach (array_chunk($imagenesOc, $columnasImg) as $fila): ?>
+            <tr>
+                <?php foreach ($fila as $img): ?>
+                <td style="width:<?php echo 100 / $columnasImg; ?>%"><img src="<?php echo $img['src']; ?>" width="<?php echo $img['w']; ?>" height="<?php echo $img['h']; ?>"></td>
+                <?php endforeach; ?>
+                <?php if (count($fila) < $columnasImg): ?><td></td><?php endif; ?>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
 
         <table class="signature-grid">
             <tr>
