@@ -359,21 +359,93 @@ function setFolio(){
 }
 
 //Registro de Cotizacion
+//Cierra la ventana de "Generando PDF..." cuando no se pudo guardar
+function cerrarVentanaPrint(){
+    try{
+        if(printCotWindow && !printCotWindow.closed){
+            printCotWindow.close();
+        }
+    }catch(e){}
+    printCotWindow = null;
+}
+
+//Abre la ventana del PDF desde el click (evita el bloqueador de ventanas emergentes)
+function abrirVentanaPrint(){
+    let ventanaPrint = window.open("about:blank", "print_cotizacion", "width=800,height=1000,scrollbars=yes,left=200,top=50,addressbar=0,menubar=0,toolbar=0");
+    if(ventanaPrint){
+        printCotWindow = ventanaPrint;
+        ventanaPrint.document.write('<p style="font-family:Arial,sans-serif;padding:20px">Guardando cotización y generando PDF...</p>');
+        ventanaPrint.document.close();
+    }
+    return ventanaPrint;
+}
+
+//Valida todos los campos obligatorios antes de guardar o imprimir
+function validarFormCotizacion(){
+    const form = document.getElementById('form-cotizacion');
+    if(!form) return false;
+    const area = document.getElementById('area');
+    if(area && !area.value){
+        area.reportValidity();
+        area.focus();
+        return false;
+    }
+    if(!form.checkValidity()){
+        form.reportValidity();
+        return false;
+    }
+    return true;
+}
+
+//Guarda (y opcionalmente imprime) la cotización
+function guardarCotizacion(print = false, iva = false){
+    if(!validarFormCotizacion()) return false;
+    if(print){ abrirVentanaPrint(); }
+    addCotizacion('', print, iva);
+    return false;
+}
+
 function addCotizacion(rev = "",print=false,iva = false) {
     let btnSave = document.getElementById("printIva");
     let btnPrint = document.getElementById("guardar");
-    btnSave.disabled = true;
-    btnPrint.disabled = true;
+    let btnGuardar = document.getElementById("btnGuardarCot");
+    const botones = [btnSave, btnPrint, btnGuardar].filter(b => b);
+    const habilitar = (estado) => botones.forEach(b => b.disabled = !estado);
+    habilitar(false);
+
+    //Respalda en borrador antes de enviar, por si algo falla
+    if(typeof guardarBorradorCot === "function"){ guardarBorradorCot(true); }
+
     const cotActual = document.querySelector("[name='cotizacion']")?.value || document.querySelector("[name='pkcotizacion']")?.value || "";
 
-   var formData = new FormData($('#form-cotizacion')[0]);
-   $.ajax({
+    const imprimirActual = () => {
+        let moneda = document.getElementById('tagmoneda') ?? null;
+        if(moneda != null && moneda.value === 'DOLAR'){
+            Print(cotActual,iva,"cotizacion","print_cotizacion",true);
+        }else{
+            Print(cotActual,iva,"cotizacion","print_cotizacion");
+        }
+    };
+
+    const mostrarError = async (texto) => {
+        await Swal.fire({
+            position: 'center',
+            icon: 'error',
+            html: '<div style="font-size:14px">' + texto + '<br><br><small>Tus datos siguen en pantalla y respaldados como borrador en este equipo.</small></div>',
+            showConfirmButton: true,
+            width:'auto',
+        });
+    };
+
+    var formData = new FormData($('#form-cotizacion')[0]);
+    $.ajax({
        type: "POST",
        data: formData,
        url: "Controller/Cotizacion.php",
        dataType: 'text',
        processData: false,
        contentType: false,
+       timeout: 60000,
        success:async function(respuesta){
         let data = null;
         if (typeof respuesta === "string") {
@@ -394,32 +466,33 @@ function addCotizacion(rev = "",print=false,iva = false) {
         }
 
         if(!data){
-            btnSave.disabled = false;
-            btnPrint.disabled = false;
+            habilitar(true);
 
+            //Cotización ya existente: se imprime lo último guardado, pero se avisa
             if(print && cotActual !== ""){
-                let moneda = document.getElementById('tagmoneda') ?? null;
-                if(moneda != null && moneda.value === 'DOLAR'){
-                    Print(cotActual,iva,"cotizacion","print_cotizacion",true);
-                }else{
-                    Print(cotActual,iva,"cotizacion","print_cotizacion");
-                }
+                imprimirActual();
+                await mostrarError('No se pudo confirmar que los cambios se guardaron. El PDF puede no incluir los últimos cambios. Vuelve a dar GUARDAR.');
                 return false;
             }
 
-            await Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                text:'Respuesta invalida del servidor al guardar.',
-                showConfirmButton: false,
-                width:'auto',
-                position:'center',
-                timer: 2500,
-            });
+            cerrarVentanaPrint();
+            await mostrarError('Respuesta inválida del servidor al guardar.');
+            return false;
+        }
+
+        if(data.session_expired){
+            habilitar(true);
+            cerrarVentanaPrint();
+            await sesionExpiradaCot();
             return false;
         }
         
         if(('success' in data) == true){
+            //Ya se guardó: se elimina el borrador y se permite salir sin aviso
+            if(typeof limpiarBorradorCot === "function"){ limpiarBorradorCot(); }
+            window.skipUnloadPrompt = true;
+            window.allowNavigation = true;
+
             if (print) {
                 let moneda = document.getElementById('tagmoneda') ?? null;
                 const cotPrint = data.cotizacion || cotActual;
@@ -442,30 +515,25 @@ function addCotizacion(rev = "",print=false,iva = false) {
             });     
         }
         else if('error_folio' in data){
-            btnSave.disabled = false;
-            btnPrint.disabled = false;
-            await Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                text:data.error_folio,
-                showConfirmButton: false,
-                width:'auto',
-                position:'center',
-                timer: 2500,
-            }); return false;
+            habilitar(true);
+            cerrarVentanaPrint();
+            await mostrarError(data.error_folio);
+            return false;
         }
         else{
-            btnSave.disabled = false;
-            btnPrint.disabled = false;
-            await Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                text:data.Error || 'No se pudo guardar la cotizacion.',
-                showConfirmButton: false,
-                width:'auto',
-                position:'center',
-                timer: 2500,
-            }); return false;
+            habilitar(true);
+            cerrarVentanaPrint();
+            //Si la cotización ya se creó, el reintento debe actualizarla y no crear otro folio
+            const form = document.getElementById('form-cotizacion');
+            if(data.cotizacion && form && !form.querySelector("[name='cotizacion']") && !form.querySelector("[name='pkcotizacion']")){
+                const hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'cotizacion';
+                hidden.value = data.cotizacion;
+                form.appendChild(hidden);
+            }
+            await mostrarError(data.Error || data.error || 'No se pudo guardar la cotizacion.');
+            return false;
         }    
            if(rev != "")
            {
@@ -484,33 +552,41 @@ function addCotizacion(rev = "",print=false,iva = false) {
                }
                
        },
-      error: async function(xhr){
-            btnSave.disabled = false;
-            btnPrint.disabled = false;
+      error: async function(xhr, status){
+            habilitar(true);
 
-            if(print && cotActual !== ""){
-                let moneda = document.getElementById('tagmoneda') ?? null;
-                if(moneda != null && moneda.value === 'DOLAR'){
-                    Print(cotActual,iva,"cotizacion","print_cotizacion",true);
-                }else{
-                    Print(cotActual,iva,"cotizacion","print_cotizacion");
-                }
+            if(print && cotActual !== "" && status !== "timeout" && xhr.status !== 0){
+                imprimirActual();
+                await mostrarError('No se pudieron guardar los cambios (error del servidor). El PDF puede no incluir los últimos cambios.');
                 return false;
             }
 
-            await Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                text:'No se pudo generar el PDF. Intente nuevamente.',
-                showConfirmButton: false,
-                width:'auto',
-                position:'center',
-                timer: 2500,
-            });
+            cerrarVentanaPrint();
+            const texto = status === "timeout"
+                ? 'El servidor tardó demasiado en responder. Vuelve a intentarlo.'
+                : (xhr.status === 0 ? 'No hay conexión con el servidor. Revisa la red y vuelve a intentarlo.' : 'No se pudo guardar la cotización (error del servidor).');
+            await mostrarError(texto);
        }
    });
 
    return false;
+}
+
+//Aviso cuando la sesión expiró: permite iniciar sesión en otra pestaña sin perder la captura
+async function sesionExpiradaCot(){
+    const r = await Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Tu sesión expiró',
+        html: '<div style="font-size:14px">No se perdió nada: tus datos siguen en pantalla y respaldados como borrador.<br><br>1. Da clic en <b>Iniciar sesión</b> (se abre en otra pestaña).<br>2. Inicia sesión y regresa a esta pestaña.<br>3. Vuelve a dar <b>GUARDAR</b> o <b>IMPRIMIR</b>.</div>',
+        showCancelButton: true,
+        confirmButtonText: 'Iniciar sesión',
+        cancelButtonText: 'Cerrar',
+        width: 'auto',
+    });
+    if(r.isConfirmed){
+        window.open('../index.php', '_blank');
+    }
 }
 
 
@@ -642,7 +718,7 @@ function NotificationPre(){
 async function cargaPresupuesto(id,fila = "",sub = "")
 {
     const suc = document.querySelector("[name='sucursal']").value;
-    const cot = document.querySelector("[name='cotizacion']").value;
+    const cot = (document.querySelector("[name='pkcotizacion']") ?? document.querySelector("[name='cotizacion']"))?.value ?? "";
     const cli = document.querySelector("[name='cliente']").value;
 
     console.log(sub);
@@ -671,7 +747,7 @@ async function cargaPresupuesto(id,fila = "",sub = "")
 async function cargaPresupuestoInd(id,fila = "",sub = "")
 {
     const suc = document.querySelector("[name='sucursal']").value;
-    const cot = document.querySelector("[name='cotizacion']").value;
+    const cot = (document.querySelector("[name='pkcotizacion']") ?? document.querySelector("[name='cotizacion']"))?.value ?? "";
     const cli = document.querySelector("[name='cliente']").value;
 
     console.log(sub);
@@ -903,46 +979,23 @@ function Add(valor){
 
 
 if(document.getElementById("guardar")){
-    document.getElementById("guardar").addEventListener("click", function () {
-        const area = document.getElementById('area');
-        if(area && !area.value){
-            area.reportValidity();
-            area.focus();
-            return false;
-        }
-
-        let ventanaPrint = window.open("about:blank", "print_cotizacion", "width=800,height=1000,scrollbars=yes,left=200,top=50,addressbar=0,menubar=0,toolbar=0");
-        if(ventanaPrint){
-            printCotWindow = ventanaPrint;
-            ventanaPrint.document.write('<p style="font-family:Arial,sans-serif;padding:20px">Generando PDF...</p>');
-            ventanaPrint.document.close();
-        }
-
-        $('#form-cotizacion').attr('onsubmit', "return addCotizacion('',true);");
-        let form = document.getElementById('form-cotizacion');
-        SentForm(form);
+    document.getElementById("guardar").addEventListener("click", function (e) {
+        e.preventDefault();
+        return guardarCotizacion(true, false);
     });
 }
 
 if(document.getElementById("printIva")){
-    document.getElementById("printIva").addEventListener("click", function () {
-        const area = document.getElementById('area');
-        if(area && !area.value){
-            area.reportValidity();
-            area.focus();
-            return false;
-        }
+    document.getElementById("printIva").addEventListener("click", function (e) {
+        e.preventDefault();
+        return guardarCotizacion(true, true);
+    });
+}
 
-        let ventanaPrint = window.open("about:blank", "print_cotizacion", "width=800,height=1000,scrollbars=yes,left=200,top=50,addressbar=0,menubar=0,toolbar=0");
-        if(ventanaPrint){
-            printCotWindow = ventanaPrint;
-            ventanaPrint.document.write('<p style="font-family:Arial,sans-serif;padding:20px">Generando PDF...</p>');
-            ventanaPrint.document.close();
-        }
-
-        $('#form-cotizacion').attr('onsubmit', "return addCotizacion('',true,true);");
-        let form = document.getElementById('form-cotizacion');
-        SentForm(form);
+if(document.getElementById("btnGuardarCot")){
+    document.getElementById("btnGuardarCot").addEventListener("click", function (e) {
+        e.preventDefault();
+        return guardarCotizacion(false, false);
     });
 }
 

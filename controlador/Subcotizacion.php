@@ -49,8 +49,11 @@
                 iva,
                 fkcotizacion,
                 fksucursal,
-                nombre
-                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
+                nombre,
+                subtotal1,
+                subtotal2,
+                total
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
 
             if($query->execute(array(
                 $data["folio"],
@@ -87,7 +90,10 @@
                 $data["iva"],
                 $data["cotizacion"],
                 $data["sucursal"],
-                $data["nombre"]
+                $data["nombre"],
+                $data["subtotal"] ?? 0,
+                0,
+                $data["total"] ?? 0
                 )) > 0){
                     $this->pksubcotizacion= self::$conexion->lastInsertId();
                return true;
@@ -260,9 +266,9 @@
 
         //Servicio de cotizacion
         public function AddServ($data): bool{
-            $query = self::$conexion->prepare('INSERT INTO subservcotizacion(pda,cant,fkunidad,descripcion,tipotrabajo,preciounit,subtotal,clave,item,fksubcotizacion) VALUES (?,?,?,?,?,?,?,?,?,?) ');
+            $query = self::$conexion->prepare('INSERT INTO subservcotizacion(pda,cant,fkunidad,descripcion,tipotrabajo,preciounit,subtotal,clave,item,fksubcotizacion,contenido,presupuesto) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ');
 
-            if($query->execute(array($data["pda"],$data["cantidad"],$data["unidad"],$data["descripcion"],$data["ttrabajo"],$data["costo"],$data["subtotal"],$data["clave"],$data["item"],$data["fksubcotizacion"])) > 0){
+            if($query->execute(array($data["pda"],$data["cantidad"],$data["unidad"],$data["descripcion"],$data["ttrabajo"],$data["costo"],$data["subtotal"],$data["clave"],$data["item"],$data["fksubcotizacion"],0,0)) > 0){
                return true;
             }
 

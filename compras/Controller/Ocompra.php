@@ -79,7 +79,7 @@ if (!isset($_POST['ocompra']) && @$_POST['ocompra'] == "") {
 
 $datos = array(
     "fechaorden" => Helper::val_input($_POST['fechaorden']),
-    "fechaent" => Helper::val_input($_POST['fechaentrega'] ?? ''),
+    "fechaent" => ($tmpFechaEnt = Helper::val_input($_POST['fechaentrega'] ?? '')) === '' ? Helper::val_input($_POST['fechaorden'] ?? date('Y-m-d')) : $tmpFechaEnt,
     "fkrequisicion" => (int) base64_decode($_POST['nrequisicion'] ?? 0),
     "fkorden" => (int) base64_decode($_POST['orden'] ?? 0),
     "moneda" => Helper::val_input($_POST['moneda']),
@@ -120,7 +120,7 @@ if (count($error) == 0) {
                         "pkservocompra" => (int) base64_decode($_POST['pkserv'][$i]),
                         "pda" => Helper::float($_POST['pda'][$i]),
                         "cantidad" => Helper::float($_POST['cant'][$i]),
-                        "unidad" => Helper::val_input($_POST['unidad'][$i]),
+                        "unidad" => (int) trim($_POST['unidad'][$i] ?? 0),
                         "descripcion" =>trim($_POST['descripcion'][$i]),
                         "preciounit" => Helper::float($_POST['punit'][$i]),
                         "subtotal" => Helper::float($_POST['importe'][$i])
@@ -140,7 +140,7 @@ if (count($error) == 0) {
                 $dataServ = array(
                     "pda" => Helper::float($_POST['pda'][$i]),
                     "cantidad" => Helper::float($_POST['cant'][$i]),
-                    "unidad" => Helper::val_input($_POST['unidad'][$i]),
+                    "unidad" => (int) trim($_POST['unidad'][$i] ?? 0),
                     "descripcion" =>trim($_POST['descripcion'][$i]),
                     "preciounit" => Helper::float($_POST['punit'][$i]),
                     "subtotal" => Helper::float($_POST['importe'][$i]),

@@ -11,6 +11,16 @@ $oCot= new Cotizacion();
 $msg = array();
 
 if($_SERVER['REQUEST_METHOD'] != "POST"){ return false;}
+
+//Si la sesión expiró se responde con un JSON claro en lugar de fallar con error 500
+if(empty($_SESSION['id_usuario']) || !isset($_SESSION['controles']) || !is_array($_SESSION['controles'])){
+    echo json_encode(array(
+        "Error" => "TU SESIÓN EXPIRÓ. INICIA SESIÓN NUEVAMENTE PARA GUARDAR.",
+        "session_expired" => true
+    ));
+    return false;
+}
+
 $suc = (int) base64_decode($_POST['sucursal']);
 
 if(!filter_var($suc,FILTER_VALIDATE_INT)){
@@ -168,70 +178,79 @@ $datos = array(
     //     return false;
     // }
 
-    if($oCot->Update($datos)){ //Actualiza los datos de la cotizacion
+    try {
+        if($oCot->Update($datos)){ //Actualiza los datos de la cotizacion
 
-        //Actualiza los datos registrados
-        $dataServReg = array(); //Se crea el array
-        if(isset($_POST["pkservcotizacion"])){ 
-            for($i = 0 ; $i < count($_POST["pkservcotizacion"]); $i++){
-                $pkservcot = (int) base64_decode($_POST["pkservcotizacion"][$i]);
-                $descripcion = trim($_POST['descripcionReg'][$i] ?? '');
-                $cantidad = Helper::float($_POST['cantReg'][$i] ?? 0);
-                $costo = Helper::float($_POST['costoReg'][$i] ?? 0);
-                $subtotal = Helper::float($_POST['subtotalReg'][$i] ?? 0);
-                $clave = trim(Helper::val_input($_POST['claveReg'][$i] ?? ''));
-                $item = trim(Helper::val_input($_POST["itemReg"][$i] ?? ''));
+            //Actualiza los datos registrados
+            $dataServReg = array(); //Se crea el array
+            if(isset($_POST["pkservcotizacion"])){ 
+                for($i = 0 ; $i < count($_POST["pkservcotizacion"]); $i++){
+                    $pkservcot = (int) base64_decode($_POST["pkservcotizacion"][$i]);
+                    $descripcion = trim($_POST['descripcionReg'][$i] ?? '');
+                    $cantidad = Helper::float($_POST['cantReg'][$i] ?? 0);
+                    $costo = Helper::float($_POST['costoReg'][$i] ?? 0);
+                    $subtotal = Helper::float($_POST['subtotalReg'][$i] ?? 0);
+                    $clave = trim(Helper::val_input($_POST['claveReg'][$i] ?? ''));
+                    $item = trim(Helper::val_input($_POST["itemReg"][$i] ?? ''));
 
-                if($descripcion === '' && $cantidad == 0 && $costo == 0 && $subtotal == 0 && $clave === '' && $item === ''){
-                    $oCot->DeleteServ($pkservcot);
-                    continue;
-                }
+                    if($descripcion === '' && $cantidad == 0 && $costo == 0 && $subtotal == 0 && $clave === '' && $item === ''){
+                        $oCot->DeleteServ($pkservcot);
+                        continue;
+                    }
 
-                $dataServReg = array(
-                    "pda" => Helper::float($_POST['pdaReg'][$i]),
-                    "cantidad" => $cantidad,
-                    "unidad" => Helper::val_input($_POST['unidadReg'][$i]),
-                    "descripcion" => $descripcion,
-                    "ttrabajo" => Helper::val_input($_POST['ttrabajoReg'][$i]),
-                    "costo" => $costo,
-                    "subtotal" => $subtotal,
-                    "clave" => $clave,
-                    "item" => $item,
-                    "contenido" => Helper::val_input($_POST["contenidoReg"][$i]),
-                    "pkservcotizacion" => $pkservcot,
-                );
-            
-                $oCot->updateServ($dataServReg);
-            }
-        }
-
-        //guarda los nuevos servicios que se agregen
-        $dataServ = array();
-        if(isset($_POST['pda'])){ 
-            for($c = 0; $c < count($_POST["pda"]); $c++){
-                if($_POST["pda"][$c] != '' || $_POST["cant"][$c] != '' ||  $_POST["unidad"][$c] != '' || $_POST["descripcion"][$c] != '' || $_POST["ttrabajo"][$c] != '' ||  $_POST["costo"][$c] != '' || $_POST["clave"][$c] != '' || $_POST["item"][$c] != '')
-                {
-                    $dataServ = array(
-                        "pda" => Helper::val_input($_POST['pda'][$c]),
-                        "cantidad" => Helper::val_input($_POST['cant'][$c]),
-                        "unidad" => Helper::val_input($_POST['unidad'][$c]),
-                        "descripcion" =>trim($_POST['descripcion'][$c]),
-                        "ttrabajo" => Helper::val_input($_POST['ttrabajo'][$c]),
-                        "costo" => Helper::float($_POST['costo'][$c]),
-                        "subtotal" => Helper::float($_POST['subtotal'][$c]),
-                        "clave" => Helper::val_input($_POST['clave'][$c]),
-                        "item" =>Helper::val_input( $_POST["item"][$c]),
-                        "fkcotizacion" => $datos['pkcotizacion']
-                    
+                    $dataServReg = array(
+                        "pda" => Helper::float($_POST['pdaReg'][$i]),
+                        "cantidad" => $cantidad,
+                        "unidad" => (int) trim($_POST['unidadReg'][$i] ?? 0),
+                        "descripcion" => $descripcion,
+                        "ttrabajo" => Helper::val_input($_POST['ttrabajoReg'][$i]),
+                        "costo" => $costo,
+                        "subtotal" => $subtotal,
+                        "clave" => $clave,
+                        "item" => $item,
+                        "contenido" => Helper::val_input($_POST["contenidoReg"][$i]),
+                        "pkservcotizacion" => $pkservcot,
                     );
-                
-                    $oCot->AddServ($dataServ);
+            
+                    $oCot->updateServ($dataServReg);
                 }
-                
             }
-        }
 
-    } 
+            //guarda los nuevos servicios que se agregen
+            $dataServ = array();
+            if(isset($_POST['pda'])){ 
+                for($c = 0; $c < count($_POST["pda"]); $c++){
+                    if($_POST["pda"][$c] != '' || $_POST["cant"][$c] != '' ||  $_POST["unidad"][$c] != '' || $_POST["descripcion"][$c] != '' || $_POST["ttrabajo"][$c] != '' ||  $_POST["costo"][$c] != '' || $_POST["clave"][$c] != '' || $_POST["item"][$c] != '')
+                    {
+                        $dataServ = array(
+                            "pda" => Helper::float($_POST['pda'][$c] ?? 0),
+                            "cantidad" => Helper::float($_POST['cant'][$c] ?? 0),
+                            "unidad" => (int) trim($_POST['unidad'][$c] ?? 0),
+                            "descripcion" =>trim($_POST['descripcion'][$c]),
+                            "ttrabajo" => Helper::val_input($_POST['ttrabajo'][$c]),
+                            "costo" => Helper::float($_POST['costo'][$c]),
+                            "subtotal" => Helper::float($_POST['subtotal'][$c]),
+                            "clave" => Helper::val_input($_POST['clave'][$c]),
+                            "item" =>Helper::val_input( $_POST["item"][$c]),
+                            "fkcotizacion" => $datos['pkcotizacion']
+                    
+                        );
+                
+                        $oCot->AddServ($dataServ);
+                    }
+                
+                }
+            }
+
+        }
+    } catch (Throwable $e) {
+        error_log("Cotizacion guardar: ".$e->getMessage());
+        //Se regresa el id para que el reintento actualice la misma cotización y no cree otro folio
+        $msg['Error'] = 'NO SE PUDO GUARDAR LA COTIZACIÓN. REVISA LOS DATOS (FECHAS, PDA, CANTIDAD, UNIDAD) E INTENTA DE NUEVO.';
+        $msg['cotizacion'] = base64_encode($datos['pkcotizacion']);
+        echo json_encode($msg);
+        return false;
+    }
     $msg['cotizacion'] = base64_encode ($datos['pkcotizacion']);
     $msg['success'] = "Guardado Exitosamente";
     echo json_encode($msg);

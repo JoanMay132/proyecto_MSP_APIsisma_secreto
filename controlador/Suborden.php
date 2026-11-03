@@ -26,8 +26,9 @@
                 observaciones,
                 fkeproduccion,
                 fkeenterado,
-                fkorden
-                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ');
+                fkorden,
+                fkcotizacion
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
 
             if($query->execute(array(
                 $data["folio"],
@@ -42,7 +43,8 @@
                 $data["observaciones"],
                 $data["auxiliar"],
                 $data["enterado"],
-                $data["fkorden"]
+                $data["fkorden"],
+                $data["fkcotizacion"] ?? 0
                 )) > 0){
                     $this->pksuborden= self::$conexion->lastInsertId();
                return true;

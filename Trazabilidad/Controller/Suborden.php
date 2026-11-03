@@ -44,7 +44,7 @@ $datos = array(
     "solicito" => (int) base64_decode($_POST['solicito'] ?? 0),
     "depto" => Helper::val_input($_POST['depto']),
     "fecha" => Helper::val_input($_POST['fecha']),
-    "diaentrega" => Helper::val_input($_POST['diaentrega']),
+    "diaentrega" => (int) ($_POST['diaentrega'] ?? 0),
     "tipo" => Helper::val_input($_POST['tipo']),
     "observaciones" => trim($_POST['observaciones']),
     "auxiliar" => (int) base64_decode($_POST['auxiliar'] ?? 0),
@@ -97,7 +97,7 @@ else
                 if($_POST["pda"][$i] != '' || $_POST["cant"][$i] != '' ||  $_POST["unidad"][$i] != '' || $_POST["descripcion"][$i] != '' ||  $_POST["dibujo"][$i] != '')
                 {
                     $dataServ = array(
-                        "pda" => Helper::val_input($_POST['pda'][$i]),
+                        "pda" => Helper::float($_POST['pda'][$i] ?? 0),
                         "cantidad" => Helper::float($_POST['cant'][$i]),
                         "unidad" => Helper::val_input($_POST['unidad'][$i]),
                         "descripcion" => trim($_POST['descripcion'][$i]),
