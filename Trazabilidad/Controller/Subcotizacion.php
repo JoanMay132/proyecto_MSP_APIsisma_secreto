@@ -65,7 +65,7 @@ $datos = array(
     "factura1" => Helper::val_input($_POST['factura1']),
     "estado" => Helper::val_input($_POST['estado']),
     "factura2" => Helper::val_input($_POST['factura2']),
-    "ffactura" => Helper::val_input($_POST['ffactura']),
+    "ffactura" => ($tmpFechaFactura = Helper::val_input($_POST['ffactura'] ?? '')) === '' ? Helper::val_input($_POST['fecha'] ?? date('Y-m-d')) : $tmpFechaFactura,
     "observaciones" => Helper::val_input($_POST['observaciones']),
     "contenido" => Helper::float($_POST['cnacional']),
     "tmoneda" => Helper::val_input($_POST['tmoneda']),
@@ -105,7 +105,7 @@ else
                 $dataServReg = array(
                     "pda" => Helper::float($_POST['pdaReg'][$i]),
                     "cantidad" => Helper::float($_POST['cantReg'][$i]),
-                    "unidad" => Helper::val_input($_POST['unidadReg'][$i]),
+                    "unidad" => (int) trim($_POST['unidadReg'][$i] ?? 0),
                     "descripcion" =>trim($_POST['descripcionReg'][$i]),
                     "ttrabajo" => Helper::val_input($_POST['ttrabajoReg'][$i]),
                     "costo" => Helper::float($_POST['costoReg'][$i]),
@@ -129,7 +129,7 @@ else
                     $dataServ = array(
                         "pda" => Helper::float($_POST['pda'][$c]),
                         "cantidad" => Helper::float($_POST['cant'][$c]),
-                        "unidad" => Helper::val_input($_POST['unidad'][$c]),
+                        "unidad" => (int) trim($_POST['unidad'][$c] ?? 0),
                         "descripcion" =>trim($_POST['descripcion'][$c]),
                         "ttrabajo" => Helper::val_input($_POST['ttrabajo'][$c]),
                         "costo" => Helper::float($_POST['costo'][$c]),

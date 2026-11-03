@@ -13,9 +13,15 @@
 		}
         //Revision preeliminar
         public function AddFolio($folio,$sucursal,$fecha): bool{
-            $query = self::$conexion->prepare('INSERT INTO revpreeliminar (folio,fksucursal,fecha) VALUES (?,?,?) ');
+            //Se envían valores por defecto para las columnas obligatorias (MySQL en modo estricto)
+            $query = self::$conexion->prepare('INSERT INTO revpreeliminar (
+                folio, fksucursal, fecha,
+                fkcliente, fkusercli, depto, proyecto,
+                reqinsdoc, reqlegales, reqent, condpago, reqespserv, desviacionexc, propcli,
+                fkeventas, fkeproduccion, fkecalidad, fkemanufactura
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
 
-            if($query->execute(array($folio,$sucursal,$fecha)) > 0){
+            if($query->execute(array($folio,$sucursal,$fecha,0,0,'','','','','','','','','',0,0,0,0)) > 0){
                 $this->pkrevpreeliminar = self::$conexion->lastInsertId();
                return true;
             }

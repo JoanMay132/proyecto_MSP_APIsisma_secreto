@@ -499,7 +499,11 @@ $oSubcot = new Subcotizacion();
 
                             <div class="row">
                                 <?php if($modifica){ ?>
-                                <div class="col-6" style="padding:0px">
+                                <div class="col-12" style="padding:0px;margin-bottom:4px">
+                                    <button type="button" class="btn btn-sm btn-outline-primary btn-block" id="btnGuardarCot"><span class="fa fa-save"></span> GUARDAR</button>
+                                    <small id="draftStatus" class="text-secondary" style="font-size:10px"></small>
+                                    </div>
+                                    <div class="col-6" style="padding:0px">
                                     <button type="button" class="btn btn-sm btn-outline-success" id="guardar" style="white-space:normal;word-wrap:break-word" ><span class="fa fa-print"></span> IMP. COTIZACION SIN IVA</button>
                                 </div>
                                 
@@ -604,7 +608,8 @@ $oSubcot = new Subcotizacion();
  
 ?>
 
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.5"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=2.0.0"></script>
+<?php if($modifica){ ?><script type="text/javascript" src="../dependencias/js/Trazabilidad/CotizacionBorrador.js?v=1.0.3"></script><?php } ?>
 <script type="text/javascript" src="../dependencias/js/Trazabilidad/Presupuesto.js?v=1.0.0"></script>
 
 <script>

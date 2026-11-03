@@ -47,4 +47,8 @@ class Conexion{
 
 }//Fin de la clase
 
-
+//Protección común para los controladores AJAX (sesión expirada y errores con respuesta JSON).
+//Solo aplica a los scripts dentro de una carpeta /Controller/; las pantallas y el login no se ven afectados.
+if (stripos($_SERVER['SCRIPT_NAME'] ?? '', '/Controller/') !== false) {
+    require_once __DIR__ . '/../class/ControllerGuard.php';
+}

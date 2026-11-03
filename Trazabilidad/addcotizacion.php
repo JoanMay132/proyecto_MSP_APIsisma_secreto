@@ -391,7 +391,11 @@ $viewCosto = '';
                             <label for="observaciones" class="txt-11 text-secondary ">OBSERVACIONES</label>
                             <textarea class="form-control col-12 scrollHidden" id="observaciones" name="observaciones" onfocus="mostrarScroll(this.id)" onblur="ocultarScroll(this.id)" style="margin-top:-10px" rows="3"></textarea><br>
                             <div class="row">
-                                <div class="col-6" style="padding:0px">
+                                <div class="col-12" style="padding:0px;margin-bottom:4px">
+                                        <button type="button" class="btn btn-sm btn-outline-primary btn-block" id="btnGuardarCot"><span class="fa fa-save"></span> GUARDAR</button>
+                                        <small id="draftStatus" class="text-secondary" style="font-size:10px"></small>
+                                    </div>
+                                    <div class="col-6" style="padding:0px">
                                         <button type="button" class="btn btn-sm btn-outline-success" id="guardar" style="white-space:normal;word-wrap:break-word" ><span class="fa fa-print"></span> IMP. COTIZACION SIN IVA</button>
                                     </div>
                                     
@@ -473,7 +477,8 @@ $viewCosto = '';
   include_once '../dependencias/php/footer.php';
 ?>
 
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=1.0.5"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=2.0.0"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/CotizacionBorrador.js?v=1.0.3"></script>
 <script type="text/javascript" src="../dependencias/js/Trazabilidad/Presupuesto.js"></script>
 
 <script>
@@ -503,16 +508,4 @@ $viewCosto = '';
         */
 </script>
 
-<!-- Adding alert to prevent accidental navigation away from the page -->
-<script>
-document.addEventListener("click", () => {
-    window.userInteracted = true;
-});
-
-window.addEventListener("beforeunload", function (event) {
-    if (window.userInteracted) {
-        event.preventDefault();
-        event.returnValue = "";
-    }
-});
-</script>
+<!-- El aviso al salir y el borrador automatico estan en CotizacionBorrador.js -->

@@ -585,7 +585,7 @@ $oDepto = new Deptocli();
  
 ?>
 
-<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js"></script>
+<script type="text/javascript" src="../dependencias/js/Trazabilidad/Cotizacion.js?v=2.0.0"></script>
 <script type="text/javascript" src="../dependencias/js/Trazabilidad/Presupuesto.js"></script>
 
 <script>

@@ -49,6 +49,35 @@
 
   <?php } ?>
 
+<!-- Mantiene viva la sesión mientras haya una pantalla abierta y avisa si ya expiró -->
+<script>
+(function () {
+  if (window.__sismaKeepAlive) return;
+  window.__sismaKeepAlive = true;
+  var url = '/' + location.pathname.split('/')[1] + '/Trazabilidad/Cargas/keepalive.php';
+  var avisado = false;
+  setInterval(function () {
+    fetch(url, { credentials: 'same-origin', cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r && r.active === false && !avisado && window.Swal) {
+          avisado = true;
+          Swal.fire({
+            icon: 'warning',
+            title: 'Tu sesión expiró',
+            html: '<div style="font-size:14px">Antes de guardar, inicia sesión en otra pestaña y regresa a esta. Lo que tienes en pantalla no se pierde mientras no cierres esta ventana.</div>',
+            showCancelButton: true,
+            confirmButtonText: 'Iniciar sesión',
+            cancelButtonText: 'Cerrar'
+          }).then(function (res) { if (res.isConfirmed) window.open('/' + location.pathname.split('/')[1] + '/index.php', '_blank'); });
+        }
+        if (r && r.active) avisado = false;
+      })
+      .catch(function () {});
+  }, 4 * 60 * 1000);
+})();
+</script>
+
 </body>
 
 </html>
