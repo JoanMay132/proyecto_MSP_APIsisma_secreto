@@ -12,8 +12,16 @@ function Subtotal(row,load = false)
     costo = (costo.value.replace(/[$,]/g, ""));
     let total = (cant.value*costo);
 
-    subtotal.value = formato(total);
+    subtotal.value = formato(total, 4);
     
+}
+
+// PRECIO y SUBTOTAL de las partidas aceptan hasta 4 decimales. Sobrescribe moneda() de Moneda.js
+// solo en las pantallas de cotización (este script se carga después).
+function moneda(input)
+{
+    let valor = parseFloat(input.value.replace(/[^\d.]/g, ''));
+    input.value = isNaN(valor) ? '' : formato(valor, 4);
 }
 
 function CantContenido() { //Operacion para calcular las cantidad x el valor del contenido original
@@ -29,13 +37,13 @@ function CantContenido() { //Operacion para calcular las cantidad x el valor del
     return total;
 }
 
-function formato(numero)
+function formato(numero, maxDecimales = 2)
 {
     var numeroFormateado = numero.toLocaleString('es-MX', {
         style: 'currency',
         currency: 'MXN',
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        maximumFractionDigits: maxDecimales
       });
 
       return numeroFormateado;
@@ -70,8 +78,18 @@ async function totales(){
     let tagIva = document.getElementById('tagIva'); //Se obtiene la etiqueta en donde se muestra el iva
     tagIva.textContent = formato( total * parseFloat("0."+iva.value));
 
+    //calculo de retencion (sobre el subtotal) - se resta del total
+    let selRetencion = document.getElementById('retencion');
+    let porcRetencion = 0;
+    if (selRetencion && selRetencion.selectedIndex >= 0) {
+        porcRetencion = parseFloat(selRetencion.options[selRetencion.selectedIndex].dataset.porc) || 0;
+    }
+    let retencion = total * (porcRetencion / 100);
+    let tagRetencion = document.getElementById('tagRetencion');
+    if (tagRetencion) { tagRetencion.textContent = formato(retencion); }
+
     let tagTotal = document.getElementById('tagTotal'); //Se obtiene la etiqueta en donde se muestra el total
-    let totales = (total + (total * parseFloat("0."+iva.value)));
+    let totales = (total + (total * parseFloat("0."+iva.value)) - retencion);
     tagTotal.textContent = formato( totales );
     inputTotal.value = (totales);
 

@@ -132,11 +132,12 @@
                 tipocambio,
                 descto,
                 iva,
+                retencion,
                 subtotal1,
                 total,
                 fkrevpreeliminar,
                 fksucursal
-                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
 
             if($query->execute(array(
                 $data["folio"],
@@ -171,6 +172,7 @@
                 $data["tcambio"],
                 $data["descto"],
                 $data["iva"],
+                $data["retencion"] ?? '',
                 $data["subtotal"],
                 $data["total"],
                 $data["revision"],
@@ -239,6 +241,7 @@
                 tipocambio = ?,
                 descto = ?,
                 iva = ?,
+                retencion = ?,
                 subtotal1 = ?,
                 total = ?,
                 fkrevpreeliminar = ?
@@ -276,6 +279,7 @@
                 $data["tcambio"],
                 $data["descto"],
                 $data["iva"],
+                $data["retencion"] ?? '',
                 $data["subtotal"],
                 $data["total"],
                 $data["revision"],
@@ -459,6 +463,7 @@
                         cotizacion.subtotal1,
                         cotizacion.descto,
                         cotizacion.iva,
+                        cotizacion.retencion,
                         cotizacion.tipocambio,
                         cotizacion.observacion,
                         cliente.pkcliente,

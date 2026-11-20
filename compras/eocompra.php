@@ -1,6 +1,7 @@
 <?php  @session_start(); {$title = '- ALTA ORDEN COMPRA';} //TITULO DE LA PAGINA
   include '../dependencias/php/head.php';
   include_once '../class/Direntrega.php'; //Dirección de entrega
+  include_once '../class/Helper.php';
   
   spl_autoload_register(function($class){
     include_once "../controlador/".$class.".php";
@@ -235,8 +236,8 @@ $resCompra=  $oCompra->GetData($idCompra);
                                 </select>
                             </td>
                             <td valign="top"><input type="number" name="cant[]"  min="0.00" step="0.01" value="<?php echo $value['cant']; ?>" onblur="Subtotal(this); totales();" data-pre="cantidad" class="form-control form-control-sm text-center"  autocomplete="off"></td>                            
-                            <td valign="top"><input type="text" name="punit[]" data-pre='costo' value="$<?php echo number_format($value['preciounit'],2,'.',','); ?>" onblur="Subtotal(this); totales();" onchange="window.moneda(this);"  class="form-control form-control-sm text-center"  autocomplete="off"></td>
-                            <td valign="top"><input type="text" name="importe[]" data-pre='subtotal' value="$<?php echo number_format($value['subtotal'],2,'.',','); ?>"  onchange="window.moneda(this);" class="form-control form-control-sm text-center subtotal"  autocomplete="off"></td>
+                            <td valign="top"><input type="text" name="punit[]" data-pre='costo' value="$<?php echo Helper::precio($value['preciounit']); ?>" onblur="Subtotal(this); totales();" onchange="window.moneda(this);"  class="form-control form-control-sm text-center"  autocomplete="off"></td>
+                            <td valign="top"><input type="text" name="importe[]" data-pre='subtotal' value="$<?php echo Helper::precio($value['subtotal']); ?>"  onchange="window.moneda(this);" class="form-control form-control-sm text-center subtotal"  autocomplete="off"></td>
                             <td valign="top"><textarea name="descripcion[]" id="descripcion-<?php echo $contador; ?>" class="form-control form-control-sm cajas-texto scrollHidden" autocomplete="off" style="resize:none;height:30px;"  onclick="menu(this); return false;"  oninput="autoResize(this);" spellcheck="false" onfocus="mostrarScroll('descripcion-<?php echo $contador; ?>')" onblur="ocultarScroll('descripcion-<?php echo $contador; ?>')"><?php echo $value['descripcion']; ?></textarea></td>
                         </tr>
                     <?php $contador++; } if($contador === 0){ ?>
@@ -338,6 +339,16 @@ $resCompra=  $oCompra->GetData($idCompra);
                             <div class="col-12 col-sm-5 price text-right" style="background:white;margin-left:20px"><p id="subtotaldesc" style="margin-top:3px;" class="txt-11">$0.00</p></div>
                     </div>
                     <div class="row">
+                            <div class="col-12 col-sm-3"><p class="txt-11" style="font-weight:bold;color:darkblue;margin-top:4px">RETENCIÓN:</p></div>
+                            <select name="retencion" id="retencion" class="form-control form-control-sm col-12 col-sm-2" style="height:20px;font-size:10px;padding:0 2px;" onchange="totales();">
+                                <option value="" data-porc="0">NINGUNA</option>
+                                <?php foreach (Helper::retenciones() as $clave => $ret) { ?>
+                                <option value="<?php echo $clave; ?>" data-porc="<?php echo $ret[1]; ?>" <?php echo (($resCompra['retencion'] ?? '') === $clave) ? 'selected' : ''; ?>><?php echo $ret[0].' ('.rtrim(rtrim(number_format($ret[1],4,'.',''),'0'),'.').'%)'; ?></option>
+                                <?php } ?>
+                            </select>
+                            <div class="col-12 col-sm-5 price text-right float-right" style="background:white;margin-left:20px"><p id="tagRetencion" style="margin-top:3px;" class="txt-11">$0.00</p></div>
+                    </div>
+                    <div class="row">
                             <div class="col-12 col-sm-5"><p class="txt-11" style="font-weight:bold;color:darkblue;margin-top:4px">IVA (16%):</p></div>
                             <div class="col-12 col-sm-5 price text-right" style="background:white;margin-left:20px"><p id="tagIva" style="margin-top:3px;" class="txt-11">$0.00</p></div>
                             <input type="hidden" name="iva" value="16" id="iva">
@@ -372,7 +383,7 @@ $resCompra=  $oCompra->GetData($idCompra);
   //Datos para pasar la info por jscript
                                     
 ?>
-<script type="text/javascript" src="../dependencias/js/Compras/Ocompra.js"></script>
+<script type="text/javascript" src="../dependencias/js/Compras/Ocompra.js?v=1.0.2"></script>
 <script type="text/javascript" src="../dependencias/js/Compras/OcompraImagenes.js?v=1.0.0"></script>
 <script>
     $(async function () {

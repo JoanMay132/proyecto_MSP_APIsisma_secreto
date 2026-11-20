@@ -132,6 +132,7 @@ $datos = array(
     "tcambio" => Helper::val_input($_POST['tcambio']),
     "descto" => Helper::float($_POST['descto']),
     "iva" => Helper::float($_POST['iva']),
+    "retencion" => Helper::retencion($_POST['retencion'] ?? '') ? $_POST['retencion'] : '',
     "subtotal" => Helper::float($_POST['inputSubtotal']),
     "total" => Helper::float($_POST['inputTotal']),
     "revision" => (int) base64_decode($_POST['revision'] ?? 0),

@@ -103,6 +103,7 @@ $datos = array(
     "importe" => Helper::float($_POST['inputSubtotal']),
     "descto" => Helper::float($_POST['descto']),
     "iva" => Helper::float($_POST['iva']),
+    "retencion" => Helper::retencion($_POST['retencion'] ?? '') ? $_POST['retencion'] : '',
     "total" => Helper::float($_POST['inputTotal']),
     "pkocompra" => (int) base64_decode($_POST['ocompra'] ?? 0)
 );

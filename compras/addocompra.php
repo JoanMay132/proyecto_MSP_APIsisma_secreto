@@ -1,6 +1,7 @@
 <?php @session_start(); {$title = '- ALTA ORDEN COMPRA';} //TITULO DE LA PAGINA
   include '../dependencias/php/head.php';
   include_once '../class/Direntrega.php'; //Dirección de entrega
+  include_once '../class/Helper.php';
   
   spl_autoload_register(function($class){
     include_once "../controlador/".$class.".php";
@@ -324,6 +325,16 @@ if(!empty($resultado)){
                             <div class="col-12 col-sm-5 price text-right" style="background:white;margin-left:20px"><p id="subtotaldesc" style="margin-top:3px;" class="txt-11">$0.00</p></div>
                     </div>
                     <div class="row">
+                            <div class="col-12 col-sm-3"><p class="txt-11" style="font-weight:bold;color:darkblue;margin-top:4px">RETENCIÓN:</p></div>
+                            <select name="retencion" id="retencion" class="form-control form-control-sm col-12 col-sm-2" style="height:20px;font-size:10px;padding:0 2px;" onchange="totales();">
+                                <option value="" data-porc="0">NINGUNA</option>
+                                <?php foreach (Helper::retenciones() as $clave => $ret) { ?>
+                                <option value="<?php echo $clave; ?>" data-porc="<?php echo $ret[1]; ?>" <?php echo ('' === $clave) ? 'selected' : ''; ?>><?php echo $ret[0].' ('.rtrim(rtrim(number_format($ret[1],4,'.',''),'0'),'.').'%)'; ?></option>
+                                <?php } ?>
+                            </select>
+                            <div class="col-12 col-sm-5 price text-right float-right" style="background:white;margin-left:20px"><p id="tagRetencion" style="margin-top:3px;" class="txt-11">$0.00</p></div>
+                    </div>
+                    <div class="row">
                             <div class="col-12 col-sm-5"><p class="txt-11" style="font-weight:bold;color:darkblue;margin-top:4px">IVA (16%):</p></div>
                             <div class="col-12 col-sm-5 price text-right" style="background:white;margin-left:20px"><p id="tagIva" style="margin-top:3px;" class="txt-11">$0.00</p></div>
                             <input type="hidden" name="iva" value="16" id="iva">
@@ -373,4 +384,4 @@ window.addEventListener("beforeunload", function (event) {
     }
 });
 </script>
-<script src="/mspapisisma/dependencias/js/Compras/Ocompra.js?v=1.0.1"></script>
+<script src="/mspapisisma/dependencias/js/Compras/Ocompra.js?v=1.0.2"></script>
