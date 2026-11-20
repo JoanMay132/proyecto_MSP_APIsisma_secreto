@@ -444,14 +444,16 @@ if(!empty($resultado)){
                     <td valign="top" style="width: 7.3%;text-align:center;border: 0.6px solid #BFBFBF"><?php echo $result['cant']; ?></td>
                     <td valign="top" style="width: 7.3%;text-align:center;border: 0.6px solid #BFBFBF"><?php echo $result['nombre']; ?></td>
                     <td valign="top" style="text-align:left;border: 0.6px solid #BFBFBF"><?php echo nl2br($result['descripcion']); ?></td>
-                    <td valign="top" style="width: 11%;text-align:right;border: 0.6px solid #BFBFBF">$<?php echo number_format($result['preciounit'],2,'.',','); ?></td>
-                    <td valign="top" style="width: 11%;text-align:right;border: 0.6px solid #BFBFBF">$<?php echo number_format($result['subtotal'],2,'.',','); ?></td>
+                    <td valign="top" style="width: 11%;text-align:right;border: 0.6px solid #BFBFBF">$<?php echo Helper::precio($result['preciounit']); ?></td>
+                    <td valign="top" style="width: 11%;text-align:right;border: 0.6px solid #BFBFBF">$<?php echo Helper::precio($result['subtotal']); ?></td>
                 </tr>
             <?php } 
                 $descto = ($resp['importe'] * $resp['descto']);
                 $subtotal = $resp['importe'] - $descto;
                 $cIva =( $subtotal * ($resp['iva']/100));
-                $total = $subtotal + $cIva;
+                $retInfo = Helper::retencion($resp['retencion'] ?? '');
+                $cRetencion = $retInfo ? $subtotal * ($retInfo[1] / 100) : 0;
+                $total = $subtotal + $cIva - $cRetencion;
             ?>
 
         </table>
@@ -472,6 +474,13 @@ if(!empty($resultado)){
                     <th style="border: 0.6px solid #BFBFBF">SUBTOTAL:</th>
                     <td style="border: 0.6px solid #BFBFBF;text-align:right">$<?php echo number_format($subtotal,2,'.',','); ?><</td>
                 </tr>
+                <?php if ($retInfo) { ?>
+                <tr>
+                    <td></td>
+                    <th style="border: 0.6px solid #BFBFBF"><?php echo $retInfo[0].' ('.rtrim(rtrim(number_format($retInfo[1],4,'.',''),'0'),'.').'%)'; ?></th>
+                    <td style="border: 0.6px solid #BFBFBF;text-align:right">-$<?php echo number_format($cRetencion,2,'.',','); ?></td>
+                </tr>
+                <?php } ?>
                 <tr>
                     <td></td>
                     <th style="border: 0.6px solid #BFBFBF">IVA(16%)</th>

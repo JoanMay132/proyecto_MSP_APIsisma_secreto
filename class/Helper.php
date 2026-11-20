@@ -23,6 +23,30 @@ class Helper{
         return $numero_float;
     }
 
+    /** Formatea un precio con mínimo 2 y máximo 4 decimales (ej. 100.50, 12.3456) */
+    public static function precio($valor): string
+    {
+        return preg_replace('/(\.\d{2}\d*?)0+$/', '$1', number_format((float) $valor, 4, '.', ','));
+    }
+
+    /** Catálogo de retenciones para órdenes de compra: clave => [etiqueta, porcentaje] */
+    public static function retenciones(): array
+    {
+        return [
+            'RET_ISR'          => ['RET ISR', 10],
+            'RET_IVA'          => ['RET IVA', 10.6666],
+            'RET_RESICO'       => ['RET RESICO', 1.25],
+            'RET_IVA_TRASLADO' => ['RET IVA TRASLADO', 4],
+        ];
+    }
+
+    /** Devuelve [etiqueta, porcentaje] de la retención o null si no aplica */
+    public static function retencion($clave): ?array
+    {
+        $ret = self::retenciones();
+        return $ret[$clave] ?? null;
+    }
+
     public static function float($data)
     {
         $data = filter_var($data, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

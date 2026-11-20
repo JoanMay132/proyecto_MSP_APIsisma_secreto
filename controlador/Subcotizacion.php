@@ -52,8 +52,9 @@
                 nombre,
                 subtotal1,
                 subtotal2,
-                total
-                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
+                total,
+                retencion
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ');
 
             if($query->execute(array(
                 $data["folio"],
@@ -93,7 +94,8 @@
                 $data["nombre"],
                 $data["subtotal"] ?? 0,
                 0,
-                $data["total"] ?? 0
+                $data["total"] ?? 0,
+                $data["retencion"] ?? ''
                 )) > 0){
                     $this->pksubcotizacion= self::$conexion->lastInsertId();
                return true;
@@ -169,6 +171,7 @@
                 tipocambio = ?,
                 descto = ?,
                 iva = ?,
+                retencion = ?,
                 subtotal1 = ?,
                 total = ?
             WHERE pksubcotizacion = ? ');
@@ -205,6 +208,7 @@
                 $data["tcambio"],
                 $data["descto"],
                 $data["iva"],
+                $data["retencion"] ?? '',
                 $data["subtotal"],
                 $data["total"],
                 $data["pksubcotizacion"]
@@ -351,6 +355,7 @@
                         subcotizacion.subtotal1,
                         subcotizacion.descto,
                         subcotizacion.iva,
+                        subcotizacion.retencion,
                         subcotizacion.tipocambio,
                         subcotizacion.observacion,
                         cliente.pkcliente,

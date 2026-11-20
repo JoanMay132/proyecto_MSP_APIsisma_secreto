@@ -112,6 +112,7 @@ class Ocompra extends Conexion{
             descto	 = ?,
             -- subtotal = ?,
             iva = ?,
+            retencion = ?,
             total = ?
         WHERE pkocompra = ? ');
         if($query->execute(array(
@@ -141,6 +142,7 @@ class Ocompra extends Conexion{
             $data['descto'],	
             //$data['subtotal'],
             $data['iva'],
+            $data['retencion'],
             $data['total'],
             $data['pkocompra']
         )) > 0){
@@ -272,6 +274,7 @@ class Ocompra extends Conexion{
         ocompra.descto,
         ocompra.iva,
         ocompra.total,
+        ocompra.retencion,
         esolicita.nombre AS solicita_nombre, 
         esolicita.apellidos AS solicita_apellidos,
         eautoriza.nombre AS autoriza_nombre,
